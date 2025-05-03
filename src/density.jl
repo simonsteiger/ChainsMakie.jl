@@ -1,7 +1,3 @@
-using CairoMakie, MCMCChains
-
-chns = Chains(randn(300, 5, 3), [:A, :B, :C, :D, :E])
-
 function axisdecorations!(ax, hidex, xlabel, ylabel, parameter)
     if ylabel
         ax.ylabel = parameter
@@ -51,11 +47,3 @@ function Makie.density!(axs::Vector{Axis}, chains::Chains, parameters; showylabe
     end
     return nothing
 end
-
-fig = density(chns, ["A", "B"])
-
-fig = Figure()
-parameters = ["A", "C"]
-axs = [Axis(fig[i, 1]) for i in eachindex(parameters)]
-density!(axs, chns, parameters)
-

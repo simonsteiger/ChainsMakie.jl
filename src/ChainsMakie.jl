@@ -2,6 +2,10 @@ module ChainsMakie
 
 using Makie, MCMCChains
 
-# Write your package code here.
+export density, density!
+export traceplot, traceplot!
+
+include("density.jl")
+include("traceplot.jl")
 
 end

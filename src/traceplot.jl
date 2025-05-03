@@ -1,7 +1,3 @@
-using CairoMakie, MCMCChains
-
-chns = Chains(randn(300, 5, 3), [:A, :B, :C, :D, :E])
-
 @recipe(TracePlot) do scene
     Attributes(
         color = nothing, # TODO define a safe way to map custom colors
@@ -22,7 +18,7 @@ function traceplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
         ax = Axis(fig[i, 1], ylabel = parameter)
-        traceplot!(chains[:, parameter, :], parameter; kwargs...)
+        traceplot!(chains[:, parameter, :]; kwargs...)
     
         hideydecorations!(ax; label=false)
         if i < length(parameters)
@@ -34,5 +30,3 @@ function traceplot(chains::Chains, parameters; kwargs...)
     
     return fig
 end
-
-fig = traceplot(chns, ["A", "B"], linewidth = 1.5)

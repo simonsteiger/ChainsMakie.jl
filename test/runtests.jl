@@ -1,6 +1,5 @@
 using ChainsMakie
 using Test
+import MCMCChains: Chains
 
-@testset "ChainsMakie.jl" begin
-    # Write your tests here.
-end
+include("run_reference_tests.jl")
