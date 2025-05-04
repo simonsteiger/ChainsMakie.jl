@@ -1,4 +1,7 @@
-testchains() = Chains(randn(Xoshiro(42), 300, 5, 3), [:A, :B, :C, :D, :E])
+function testchains(; n = 300, p = 5, c = 4)
+    parameters = [:A, :B, :C, :D, :E]
+    return Chains(randn(Xoshiro(42), n, p, c), first(parameters, p))
+end
 
 reftest("single traceplot") do
     chns = testchains()
@@ -9,5 +12,11 @@ end
 reftest("two traceplots") do
     chns = testchains()
     fig = traceplot(chns, ["A", "B"])
+    return fig
+end
+
+reftest("plot method") do
+    chns = testchains(p = 2)
+    fig = plot(chns)
     return fig
 end
