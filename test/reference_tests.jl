@@ -15,6 +15,18 @@ reftest("two traceplots") do
     return fig
 end
 
+reftest("single density") do
+    chns = testchains()
+    fig, ax, plt = chainsdensity(chns[:, :B, :])
+    return fig
+end
+
+reftest("two densities") do
+    chns = testchains()
+    fig = density(chns, ["A", "B"])
+    return fig
+end
+
 reftest("plot method") do
     chns = testchains(p = 2)
     fig = plot(chns)

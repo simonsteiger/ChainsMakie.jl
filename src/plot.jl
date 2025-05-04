@@ -14,7 +14,7 @@ function Makie.plot(chains::Chains; size = nothing, hidey = false)
         param_idx = first(coord)
         ax = Axis(fig[coord...])
         if iszero(i % 2)
-            density!(chains[:, param_idx, :])
+            chainsdensity!(chains[:, param_idx, :])
         else
             traceplot!(chains[:, param_idx, :])
         end

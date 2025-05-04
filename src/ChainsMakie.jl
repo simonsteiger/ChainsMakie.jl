@@ -2,7 +2,7 @@ module ChainsMakie
 
 using Makie, MCMCChains
 
-export density, density!
+export density, chainsdensity, chainsdensity!
 export traceplot, traceplot!
 export plot
 
