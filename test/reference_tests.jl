@@ -11,3 +11,9 @@ reftest("two traceplots") do
     fig = traceplot(chns, ["A", "B"])
     return fig
 end
+
+reftest("plot method") do
+    chns = testchains()
+    fig = plot(chns)
+    return fig
+end

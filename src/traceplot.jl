@@ -1,6 +1,6 @@
 @recipe(TracePlot) do scene
     Attributes(
-        color = nothing, # TODO define a safe way to map custom colors
+        color = nothing, # TODO define a safe way to map custom colors -- maybe take `colormap` instead?
         linewidth = 1.5,
     )
 end
