@@ -7,19 +7,22 @@ end
 
 function Makie.plot!(tp::TracePlot{<:Tuple{<:AbstractMatrix}})
     mat = tp[1]
-    n_samples = size(mat[], 1)
-    for chain in eachcol(mat[])
-        lines!(tp, 1:n_samples, chain; linewidth = tp.linewidth)
+    
+    xs = lift(m -> 1:size(m, 1), mat)
+    for ys in eachcol(to_value(mat)) # FIXME interactivity?
+        lines!(tp, xs, ys; linewidth = tp.linewidth)
     end
+
     return tp
 end
 
 function traceplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1], ylabel = parameter)
+        ax = Axis(fig[i, 1], ylabel = string(parameter))
+        
         traceplot!(chains[:, parameter, :]; kwargs...)
-    
+        
         hideydecorations!(ax; label=false)
         if i < length(parameters)
             hidexdecorations!(ax; grid=false)
