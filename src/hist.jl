@@ -1,24 +1,25 @@
-@recipe(ChainsDensity) do scene
+@recipe(ChainsHist) do scene
     Attributes(
         color = nothing, # TODO define a safe way to map custom colors -- maybe take `colormap` instead?
+        bins = 15,
     )
 end
 
-function Makie.plot!(md::ChainsDensity{<:Tuple{<:AbstractMatrix}})
+function Makie.plot!(md::ChainsHist{<:Tuple{<:AbstractMatrix}})
     mat = md[1]
     for chain in eachcol(mat[])
-        density!(md, chain)
+        hist!(md, chain)
     end
     return md
 end
 
-function Makie.density(chains::Chains, parameters; hidey=true, kwargs...)
+function Makie.hist(chains::Chains, parameters; hidey=true, kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
         ax = Axis(fig[i, 1])
         hidex = i < length(parameters)
         _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter)
-        chainsdensity!(chains[:, parameter, :]; kwargs...)
+        chainshist!(chains[:, parameter, :]; kwargs...)
     end
     return fig
 end

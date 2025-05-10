@@ -39,6 +39,18 @@ reftest("two densities") do
     return fig
 end
 
+reftest("single hist") do
+    chns = testchains()
+    fig, ax, plt = chainshist(chns[:, :B, :])
+    return fig
+end
+
+reftest("two hists") do
+    chns = testchains()
+    fig = hist(chns, ["A", "B"])
+    return fig
+end
+
 reftest("plot method") do
     chns = testchains(p = 2)
     fig = plot(chns)
