@@ -1,3 +1,5 @@
+# TODO add legend on first axis
+# add ylabel for one of the rows
 function Makie.plot(chains::Chains; size = nothing, hidey = false)
     parameters = names(chains)
     n_params = length(parameters)
@@ -17,6 +19,7 @@ function Makie.plot(chains::Chains; size = nothing, hidey = false)
             all(isinteger, mat) ? chainsbarplot!(mat) : chainsdensity!(mat)
         else
             traceplot!(mat)
+            ax.ylabel = string(parameters[param_idx])
         end
         
         if param_idx < n_params
@@ -25,9 +28,6 @@ function Makie.plot(chains::Chains; size = nothing, hidey = false)
             ax.xlabel = _xlabel(i)
         end
 
-        if hidey
-            ax.ylabel = ylabel
-        end
         hideydecorations!(ax; label=false)
     end
     
