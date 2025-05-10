@@ -7,9 +7,9 @@ end
 
 function Makie.plot!(tp::TracePlot{<:Tuple{<:AbstractMatrix}})
     mat = tp[1]
-    n_samples = size(mat[], 1)
-    for chain in eachcol(mat[])
-        lines!(tp, 1:n_samples, chain; linewidth = tp.linewidth)
+    nsamples = size(mat[], 1)
+    for chain in eachcol(mat[]) # FIXME breaking interactivity?
+        lines!(tp, 1:nsamples, chain; linewidth = tp.linewidth)
     end
     return tp
 end
@@ -17,7 +17,7 @@ end
 function traceplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1], ylabel = parameter)
+        ax = Axis(fig[i, 1], ylabel = string(parameter)) # Or another method where parameters::Symbol? Unnecessary?
         traceplot!(chains[:, parameter, :]; kwargs...)
     
         hideydecorations!(ax; label=false)
