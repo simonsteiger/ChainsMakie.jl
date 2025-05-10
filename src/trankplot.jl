@@ -8,20 +8,25 @@ end
 
 function Makie.plot!(tp::TrankPlot{<:Tuple{<:AbstractMatrix}})
     mat = tp[1]
-    iter_range = lift(mat, tp.bins) do m, length
-        centers(range(1, size(m, 1); length))
-    end
     binmat = lift((m, bins) -> bin_chain(m; bins), mat, tp.bins)
-    for ys in eachcol(to_value(binmat))
-        stairs!(tp, iter_range, ys)
+    
+    xs = lift(mat, tp.bins) do m, length
+        r = range(1, size(m, 1); length)
+        padx!(r, centers(r))
     end
+
+    for col in eachcol(to_value(binmat)) # FIXME interactivity?
+        ys = pady!(collect(col))
+        stairs!(tp, xs, ys; step = :center)
+    end
+    
     return tp
 end
 
 function trankplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1], ylabel = string(parameter)) # Or another method where parameters::Symbol? Unnecessary?
+        ax = Axis(fig[i, 1], ylabel = string(parameter))
         trankplot!(chains[:, parameter, :]; kwargs...)
     
         hideydecorations!(ax; label=false)
@@ -48,3 +53,15 @@ function bin_chain(mat::AbstractMatrix; bins = 20)
 end
 
 centers(x::StepRangeLen) = [mean(steps) for steps in zip(x, x[2:end])]
+
+function padx!(r, xs)
+    pushfirst!(xs, minimum(r))
+    push!(xs, maximum(r))
+    return xs
+end
+
+function pady!(ys)
+    pushfirst!(ys, first(ys))
+    push!(ys, last(ys))
+    return ys
+end
