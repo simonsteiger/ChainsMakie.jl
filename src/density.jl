@@ -6,7 +6,7 @@ end
 
 function Makie.plot!(md::ChainsDensity{<:Tuple{<:AbstractMatrix}})
     mat = md[1]
-    for chain in eachcol(mat[])
+    for (i, chain) in enumerate(eachcol(mat[]))
         density!(md, chain)
     end
     return md
