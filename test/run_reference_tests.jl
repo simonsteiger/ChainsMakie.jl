@@ -2,7 +2,7 @@ using CairoMakie
 import ImageInTerminal
 import DelimitedFiles
 using Statistics
-using Random
+using StableRNGs
 
 rgbaf_convert(x::AbstractMatrix{<:Makie.RGB}) = convert(Matrix{RGBAf}, x)
 rgbaf_convert(x::AbstractMatrix{<:Makie.RGBA}) = convert(Matrix{RGBAf}, x)

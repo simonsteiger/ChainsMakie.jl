@@ -1,5 +1,5 @@
 function continuous_samples(; n = 300, p = 4, c = 4)
-    return randn(Xoshiro(42), n, p, c)
+    return randn(StableRNG(42), n, p, c)
 end
 
 function discrete_samples(; n = 300, p = 1, c = 4)
