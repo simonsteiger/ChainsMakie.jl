@@ -1,18 +1,3 @@
-function continuous_samples(; n = 300, p = 4, c = 4)
-    return randn(StableRNG(42), n, p, c)
-end
-
-function discrete_samples(; n = 300, p = 1, c = 4)
-    return reshape(repeat(1:4, n ÷ 4 * c), (n, p, c))
-end
-
-function testchains(a = continuous_samples())
-    p = size(a, 2)
-    parameters = [:A, :B, :C, :D, :E]
-    @assert p < length(parameters)
-    return Chains(a, first(parameters, p))
-end
-
 reftest("single traceplot") do
     chns = testchains()
     fig, ax, plt = traceplot(chns[:, :B, :])
@@ -64,6 +49,25 @@ end
 reftest("plot method") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)
+    return fig
+end
+
+reftest("plot method two banks") do
+    chns = testchains(continuous_samples(p = 2, c = 6))
+    fig = plot(chns)
+    return fig
+end
+
+reftest("plot method > 7 chains") do
+    chns = testchains(continuous_samples(p = 2, c = 8))
+    fig = plot(chns)
+    return fig
+end
+
+reftest("plot method custom figsize") do
+    chns = testchains(continuous_samples(p = 2))
+    fig = Figure(size = (600, 600))
+    fig = plot(chns; figure = fig)
     return fig
 end
 

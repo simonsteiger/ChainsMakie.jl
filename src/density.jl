@@ -1,17 +1,24 @@
 @recipe(ChainsDensity) do scene
     Attributes(
-        color = nothing, # TODO define a safe way to map custom colors -- maybe take `colormap` instead?
+        color = Makie.wong_colors(),
     )
 end
 
-function Makie.plot!(md::ChainsDensity{<:Tuple{<:AbstractMatrix}})
-    mat = md[1]
-    for (i, chain) in enumerate(eachcol(mat[]))
-        density!(md, chain)
+function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
+    mat = cd[1]
+    
+    if size(mat[], 2) > length(cd.color[])
+        throw(error("Specify at least as many colors as there are chains."))
     end
-    return md
+    
+    for (i, ys) in enumerate(eachcol(mat[]))
+        density!(cd, ys; color = (cd.color[][i], 0.8))
+    end
+    
+    return cd
 end
 
+# TODO adjust decoration hiding based on loop
 function Makie.density(chains::Chains, parameters; hidey=true, kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)

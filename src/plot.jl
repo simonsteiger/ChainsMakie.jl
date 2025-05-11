@@ -1,40 +1,66 @@
-function Makie.plot(chains::Chains; size = nothing, hidey = false)
+function Makie.plot(chains::Chains; figure = nothing)
     parameters = names(chains)
-    n_params = length(parameters)
+    _, nparams, nchains = size(chains)
+    color = get_colors(nchains)
     
-    if isnothing(size)
-        size = (600, n_params * 200)
+    if !(figure isa Figure)
+        figure = Figure(size = autosize(chains))
     end
-    fig = Figure(; size)
     
-    for i in 1:n_params * 2
+    for i in 1:nparams * 2
         coord = fldmod1(i, 2)
         param_idx = first(coord)
 
         mat = chains[:, param_idx, :]
-        ax = Axis(fig[coord...])
+        ax = Axis(figure[coord...])
         if iszero(i % 2)
-            all(isinteger, mat) ? chainsbarplot!(mat) : chainsdensity!(mat)
+            all(isinteger, mat) ? chainsbarplot!(mat; color) : chainsdensity!(mat; color)
         else
-            traceplot!(mat)
+            traceplot!(mat; color)
+            ax.ylabel = string(parameters[param_idx])
         end
         
-        if param_idx < n_params
-            hidexdecorations!(ax; grid=false, ticklabels=false, ticks=false)
+        if param_idx < nparams
+            hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
         else
-            ax.xlabel = _xlabel(i)
+            ax.xlabel = iszero(i % 2) ? "Parameter estimate" : "Iteration"
         end
 
-        if hidey
-            ax.ylabel = ylabel
-        end
-        hideydecorations!(ax; label=false)
+        hideydecorations!(ax; label = false)
     end
+
+    chainslegend(figure, chains, color)
     
-    # The currently shown Makie code on MCMCChains.jl links axes
-    # but sometimes the value ranges for different params differ a lot
-    axes = [only(contents(fig[i, 2])) for i in 1:n_params]
-    #linkxaxes!(axes...)
-    
-    return fig
+    return figure
 end
+
+function get_colors(nchains)
+    if nchains > 7
+        colormap = Makie.to_colormap(:viridis)
+        idx = round.(Int, collect(range(1, length(colormap), length = nchains)))
+        return colormap[idx]
+    end
+    return Makie.wong_colors()[1:nchains]
+end
+
+function chainslegend(fig, chains, colors)
+    _, nparams, nchains = size(chains)
+    
+    elems = [PolyElement(color = (color, 0.8)) for color in colors]
+    labels = [string(i) for i in 1:nchains]
+    
+    colpos = last(size(fig.layout)) > 1 ? range(1, 2) : 1
+    
+    Legend(fig[nparams + 1, colpos], elems, labels, "Chain",
+        orientation = :horizontal, nbanks = nbanks(chains))
+    
+    return nothing
+end
+
+function autosize(chains)
+    axis_size = 200
+    legend_size = 40 + nbanks(chains) * 20
+    return (600, size(chains, 2) * axis_size + legend_size)
+end
+
+nbanks(chains; per_bank = 5)::Int64 = ceil(size(chains, 3) / per_bank)

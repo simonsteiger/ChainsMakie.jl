@@ -1,6 +1,6 @@
 @recipe(TrankPlot) do scene
     Attributes(
-        color = nothing, # TODO define a safe way to map custom colors -- maybe take `colormap` instead?
+        color = Makie.wong_colors(),
         linewidth = 1.5,
         bins = 20,
     )
@@ -8,6 +8,11 @@ end
 
 function Makie.plot!(tp::TrankPlot{<:Tuple{<:AbstractMatrix}})
     mat = tp[1]
+
+    if size(mat[], 2) > length(tp.color[])
+        throw(error("Specify at least as many colors as there are chains."))
+    end
+
     binmat = lift((m, bins) -> bin_chain(m; bins), mat, tp.bins)
     
     xs = lift(mat, tp.bins) do m, length
@@ -15,14 +20,15 @@ function Makie.plot!(tp::TrankPlot{<:Tuple{<:AbstractMatrix}})
         padx!(r, centers(r))
     end
 
-    for col in eachcol(to_value(binmat)) # FIXME interactivity?
+    for (i, col) in enumerate(eachcol(to_value(binmat))) # FIXME interactivity?
         ys = pady!(collect(col))
-        stairs!(tp, xs, ys; step = :center)
+        stairs!(tp, xs, ys; step = :center, color = to_value(tp.color)[i])
     end
     
     return tp
 end
 
+# TODO adjust decoration hiding based on loop
 function trankplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
