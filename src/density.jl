@@ -6,10 +6,15 @@ end
 
 function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
     mat = cd[1]
-    # FIXME this currently breaks for > 7 chains! Error and tell user to specify more colors
-    for (i, ys) in enumerate(eachcol(to_value(mat)))
-        density!(cd, ys; color = (to_value(cd.color)[i], 0.8))
+    
+    if size(mat[], 2) > length(cd.color[])
+        throw(error("Specify at least as many colors as there are chains."))
     end
+    
+    for (i, ys) in enumerate(eachcol(mat[]))
+        density!(cd, ys; color = (cd.color[][i], 0.8))
+    end
+    
     return cd
 end
 

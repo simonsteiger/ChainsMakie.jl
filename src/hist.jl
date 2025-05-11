@@ -7,10 +7,15 @@ end
 
 function Makie.plot!(ch::ChainsHist{<:Tuple{<:AbstractMatrix}})
     mat = ch[1]
-    # FIXME this currently breaks for > 7 chains! Error and tell user to specify more colors
+
+    if size(mat[], 2) > length(ch.color[])
+        throw(error("Specify at least as many colors as there are chains."))
+    end
+    
     for (i, ys) in enumerate(eachcol(to_value(mat)))
         hist!(ch, ys; color = (to_value(ch.color)[i], 0.8))
     end
+    
     return ch
 end
 

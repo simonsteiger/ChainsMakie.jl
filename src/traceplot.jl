@@ -8,10 +8,15 @@ end
 function Makie.plot!(tp::TracePlot{<:Tuple{<:AbstractMatrix}})
     mat = tp[1]
     xs = lift(m -> 1:size(m, 1), mat)
-    # FIXME this currently breaks for > 7 chains! Error and tell user to specify more colors
+    
+    if size(mat[], 2) > length(tp.color[])
+        throw(error("Specify at least as many colors as there are chains."))
+    end
+
     for (i, ys) in enumerate(eachcol(to_value(mat))) # FIXME interactivity?
         lines!(tp, xs, ys; linewidth = tp.linewidth, color = (to_value(tp.color)[i], 0.8))
     end
+    
     return tp
 end
 
