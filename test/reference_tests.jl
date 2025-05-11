@@ -67,6 +67,25 @@ reftest("plot method") do
     return fig
 end
 
+reftest("plot method two banks") do
+    chns = testchains(continuous_samples(p = 2, c = 6))
+    fig = plot(chns)
+    return fig
+end
+
+reftest("plot method > 7 chains") do
+    chns = testchains(continuous_samples(p = 2, c = 8))
+    fig = plot(chns)
+    return fig
+end
+
+reftest("plot method custom figsize") do
+    chns = testchains(continuous_samples(p = 2))
+    fig = Figure(size = (600, 600))
+    fig = plot(chns; figure = fig)
+    return fig
+end
+
 reftest("plot method mixed densities") do
     a = Real[discrete_samples() continuous_samples(p = 1)]
     chns = testchains(a)

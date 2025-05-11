@@ -1,6 +1,6 @@
 @recipe(ChainsBarPlot) do scene
     Attributes(
-        color = nothing, # TODO define a safe way to map custom colors -- maybe take `colormap` instead?
+        color = Makie.wong_colors(),
         bins = 15,
     )
 end
@@ -8,9 +8,12 @@ end
 function Makie.plot!(bp::ChainsBarPlot{<:Tuple{<:AbstractMatrix}})
     mat = bp[1]
     all(isinteger, mat[]) || throw(error("Use `hist` continuous parameters."))
-    for chain in eachcol(mat[])
-        count_dict = countmap(chain)
-        barplot!(bp, collect(keys(count_dict)), collect(values(count_dict)))
+    # FIXME this currently breaks for > 7 chains! Error and tell user to specify more colors
+    for (i, ys) in enumerate(eachcol(to_value(mat)))
+        count_dict = countmap(ys)
+        xs = collect(keys(count_dict))
+        ys = collect(values(count_dict))
+        barplot!(bp, xs, ys; color = to_value(bp.color)[i])
     end
     return bp
 end

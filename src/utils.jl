@@ -10,5 +10,3 @@ function _axisdecorations!(ax, hidex, xlabel, hidey, ylabel)
     end
     return ax
 end
-
-_xlabel(i) = iszero(i % 2) ? "Parameter estimate" : "Iteration"
