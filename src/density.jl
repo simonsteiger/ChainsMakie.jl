@@ -1,6 +1,8 @@
 @recipe(ChainsDensity) do scene
     Attributes(
         color = Makie.wong_colors(),
+        strokewidth = 1,
+        alpha = 0.4,
     )
 end
 
@@ -12,7 +14,8 @@ function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
     end
     
     for (i, ys) in enumerate(eachcol(mat[]))
-        density!(cd, ys; color = (cd.color[][i], 0.8))
+        density!(cd, ys; color = (cd.color[][i], cd.alpha[]),
+                 strokecolor = cd.color[][i], strokewidth = cd.strokewidth[])
     end
     
     return cd

@@ -2,6 +2,8 @@
     Attributes(
         color = Makie.wong_colors(),
         bins = 15,
+        alpha = 0.4,
+        linewidth = 1,
     )
 end
 
@@ -13,7 +15,8 @@ function Makie.plot!(ch::ChainsHist{<:Tuple{<:AbstractMatrix}})
     end
     
     for (i, ys) in enumerate(eachcol(to_value(mat)))
-        hist!(ch, ys; color = (to_value(ch.color)[i], 0.8))
+        hist!(ch, ys; color = (ch.color[][i], ch.alpha[]), bins = ch.bins[])
+        stephist!(ch, ys; bins = ch.bins[], color = ch.color[][i], linewidth = ch.linewidth[])
     end
     
     return ch
