@@ -22,6 +22,18 @@ reftest("two hists") do
     return fig
 end
 
+reftest("ridgeline") do
+    chns = testchains()
+    fig, ax, plt = ridgeline(chns, ["A", "B"])
+    return fig
+end
+
+reftest("ridgeline symbols 4 pars") do
+    chns = testchains()
+    fig, ax, plt = ridgeline(chns, [:A, :B, :C, :D])
+    return fig
+end
+
 reftest("plot method") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)

@@ -46,7 +46,7 @@ end
 function chainslegend(fig, chains, colors)
     _, nparams, nchains = size(chains)
     
-    elems = [PolyElement(color = (color, 0.8)) for color in colors]
+    elems = [PolyElement(; color) for color in colors]
     labels = [string(i) for i in 1:nchains]
     
     colpos = last(size(fig.layout)) > 1 ? range(1, 2) : 1
