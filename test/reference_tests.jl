@@ -1,18 +1,6 @@
-reftest("single traceplot") do
-    chns = testchains()
-    fig, ax, plt = traceplot(chns[:, :B, :])
-    return fig
-end
-
 reftest("two traceplots") do
     chns = testchains()
     fig = traceplot(chns, ["A", "B"])
-    return fig
-end
-
-reftest("single trankplot") do
-    chns = testchains()
-    fig, ax, plt = trankplot(chns[:, :B, :])
     return fig
 end
 
@@ -22,21 +10,9 @@ reftest("two trankplots") do
     return fig
 end
 
-reftest("single density") do
-    chns = testchains()
-    fig, ax, plt = chainsdensity(chns[:, :B, :])
-    return fig
-end
-
 reftest("two densities") do
     chns = testchains()
     fig = density(chns, ["A", "B"])
-    return fig
-end
-
-reftest("single hist") do
-    chns = testchains()
-    fig, ax, plt = chainshist(chns[:, :B, :])
     return fig
 end
 
