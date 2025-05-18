@@ -1,15 +1,15 @@
 module ChainsMakie
 
-using Makie, MCMCChains, StatsBase
+using Makie, MCMCChains, StatsBase, Compat
 
 export density, hist, barplot
 export traceplot, traceplot!
 export trankplot, trankplot!
 export plot
 
-public chainsdensity, chainsdensity!
-public chainshist, chainshist!
-public chainsbarplot, chainsbarplot!
+@compat public chainsdensity, chainsdensity!
+@compat public chainshist, chainshist!
+@compat public chainsbarplot, chainsbarplot!
 
 include("utils.jl")
 include("density.jl")
