@@ -34,6 +34,18 @@ reftest("ridgeline symbols 4 pars") do
     return fig
 end
 
+reftest("forestplot median") do
+    chns = testchains()
+    fig, ax, plt = forestplot(chns, [:A, :B, :C])
+    return fig
+end
+
+reftest("forestplot mean") do
+    chns = testchains()
+    fig, ax, plt = forestplot(chns, [:A, :B, :C], point_summary = mean)
+    return fig
+end
+
 reftest("plot method") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)

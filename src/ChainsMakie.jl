@@ -1,12 +1,14 @@
 module ChainsMakie
 
-using Makie, MCMCChains, StatsBase, Compat
+using Makie, MCMCChains, Compat
+using StatsBase, Statistics
 
 export density, hist, barplot
 export traceplot, traceplot!
 export trankplot, trankplot!
 export ridgeline, ridgeline!
-export plot
+export forestplot, forestplot!
+export plot # is this type piracy because I don't own the type Chains?
 
 @compat public chainsdensity, chainsdensity!
 @compat public chainshist, chainshist!
@@ -19,6 +21,7 @@ include("hist.jl")
 include("traceplot.jl")
 include("trankplot.jl")
 include("ridgeline.jl")
+include("forestplot.jl")
 include("plot.jl")
 
 end
