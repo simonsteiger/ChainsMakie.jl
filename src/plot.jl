@@ -34,15 +34,6 @@ function Makie.plot(chains::Chains; figure = nothing)
     return figure
 end
 
-function get_colors(nchains)
-    if nchains > 7
-        colormap = Makie.to_colormap(:viridis)
-        idx = round.(Int, collect(range(1, length(colormap), length = nchains)))
-        return colormap[idx]
-    end
-    return Makie.wong_colors()[1:nchains]
-end
-
 function chainslegend(fig, chains, colors)
     _, nparams, nchains = size(chains)
     

@@ -26,6 +26,7 @@ function ridgeline(chn::Chains, parameters; figure = nothing, kwargs...)
 
     ax = Axis(figure[1, 1])
     ax.yticks = (eachindex(parameters) ./ 2, reverse(string.(parameters)))
+    ax.xlabel = "Parameter estimate"
     plt = ridgeline!(samples; kwargs...)
 
     return figure, ax, plt

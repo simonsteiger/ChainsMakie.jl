@@ -10,3 +10,14 @@ function _axisdecorations!(ax, hidex, xlabel, hidey, ylabel)
     end
     return ax
 end
+
+sdim(i) = v -> map(x -> x[i], v)
+
+function get_colors(n; colormap = :viridis, threshold = 7)
+    if n > threshold
+        colormap = Makie.to_colormap(colormap)
+        idx = round.(Int, collect(range(1, length(colormap), length = n)))
+        return colormap[idx]
+    end
+    return Makie.wong_colors()[1:n]
+end
