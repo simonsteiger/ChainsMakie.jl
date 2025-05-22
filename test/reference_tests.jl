@@ -46,6 +46,12 @@ reftest("forestplot mean") do
     return fig
 end
 
+reftest("two autocorplots") do
+    chns = testchains()
+    fig = autocorplot(chns, ["A", "B"])
+    return fig
+end
+
 reftest("plot method") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)
