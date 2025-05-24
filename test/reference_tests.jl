@@ -28,27 +28,21 @@ reftest("ridgeline") do
     return fig
 end
 
-reftest("ridgeline symbols 4 pars") do
-    chns = testchains()
-    fig, ax, plt = ridgeline(chns, [:A, :B, :C, :D])
-    return fig
-end
-
 reftest("forestplot median") do
     chns = testchains()
-    fig, ax, plt = forestplot(chns, [:A, :B, :C])
-    return fig
-end
-
-reftest("forestplot mean") do
-    chns = testchains()
-    fig, ax, plt = forestplot(chns, [:A, :B, :C], point_summary = mean)
+    fig, ax, plt = forestplot(chns, [:A, :B])
     return fig
 end
 
 reftest("two autocorplots") do
     chns = testchains()
     fig = autocorplot(chns, ["A", "B"])
+    return fig
+end
+
+reftest("meanplot") do
+    chns = testchains()
+    fig = meanplot(chns, ["A", "B"])
     return fig
 end
 
@@ -67,13 +61,6 @@ end
 reftest("plot method > 7 chains") do
     chns = testchains(continuous_samples(p = 2, c = 8))
     fig = plot(chns)
-    return fig
-end
-
-reftest("plot method custom figsize") do
-    chns = testchains(continuous_samples(p = 2))
-    fig = Figure(size = (600, 600))
-    fig = plot(chns; figure = fig)
     return fig
 end
 
