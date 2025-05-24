@@ -29,16 +29,17 @@ end
 function autocorplot(chains::Chains, parameters; kwargs...)
     fig = Figure()
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1], ylabel = "Autocorrelation")
+        ax1 = Axis(fig[i, 1], ylabel = string(parameter))
+        ax2 = Axis(fig[i, 1], ylabel = "Autocorrelation", yaxisposition = :right)
         
         autocorplot!(chains[:, parameter, :]; kwargs...)
-
-        # TODO find a way to also label the parameter, maybe something like top right in axis?
         
+        hideydecorations!(ax1; label=false)
+        hidexdecorations!(ax1)
         if i < length(parameters)
-            hidexdecorations!(ax; grid=false)
+            hidexdecorations!(ax2; grid=false)
         else
-            ax.xlabel = "Lag"
+            ax2.xlabel = "Lag"
         end    
     end
     
