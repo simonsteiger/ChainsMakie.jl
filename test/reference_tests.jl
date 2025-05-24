@@ -40,7 +40,7 @@ reftest("two autocorplots") do
     return fig
 end
 
-reftest("meanplot") do
+reftest("two meanplots") do
     chns = testchains()
     fig = meanplot(chns, ["A", "B"])
     return fig
@@ -68,5 +68,11 @@ reftest("plot method mixed densities") do
     a = Real[discrete_samples() continuous_samples(p = 1)]
     chns = testchains(a)
     fig = plot(chns)
+    return fig
+end
+
+reftest("plot method custom funs") do
+    chns = testchains(continuous_samples(p = 2, c = 6))
+    fig = plot(chns, trankplot!, chainshist!, meanplot!)
     return fig
 end

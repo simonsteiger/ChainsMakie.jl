@@ -29,10 +29,18 @@ function meanplot(chains::Chains, parameters; figure = nothing, kwargs...)
     end
     
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(figure[i, 1])
-        hidex = i < length(parameters)
-        _axisdecorations!(ax, hidex, "Iteration", true, parameter) # FIXME don't do this hidex hidey thing
+        ax1 = Axis(figure[i, 1], ylabel = string(parameter))
+        ax2 = Axis(figure[i, 1], ylabel = "Mean", yaxisposition = :right)
+
         meanplot!(chains[:, parameter, :]; kwargs...)
+
+        hideydecorations!(ax1; label=false)
+        hidexdecorations!(ax1)
+        if i < length(parameters)
+            hidexdecorations!(ax2; grid=false)
+        else
+            ax2.xlabel = "Iteration"
+        end
     end
 
     chainslegend(figure, chains[:, parameters, :], color)

@@ -26,11 +26,16 @@ function Makie.plot!(ap::AutocorPlot{<:Tuple{<:AbstractMatrix}})
     return ap
 end
 
-function autocorplot(chains::Chains, parameters; kwargs...)
-    fig = Figure()
+function autocorplot(chains::Chains, parameters; figure = nothing, kwargs...)
+    color = get_colors(size(chains[:, parameters, :], 3))
+
+    if !(figure isa Figure)
+        figure = Figure(size = autosize(chains[:, parameters, :]))
+    end
+
     for (i, parameter) in enumerate(parameters)
-        ax1 = Axis(fig[i, 1], ylabel = string(parameter))
-        ax2 = Axis(fig[i, 1], ylabel = "Autocorrelation", yaxisposition = :right)
+        ax1 = Axis(figure[i, 1], ylabel = string(parameter))
+        ax2 = Axis(figure[i, 1], ylabel = "Autocorrelation", yaxisposition = :right)
         
         autocorplot!(chains[:, parameter, :]; kwargs...)
         
@@ -42,7 +47,9 @@ function autocorplot(chains::Chains, parameters; kwargs...)
             ax2.xlabel = "Lag"
         end    
     end
+
+    chainslegend(figure, chains[:, parameters, :], color)
     
-    return fig
+    return figure
 end
 
