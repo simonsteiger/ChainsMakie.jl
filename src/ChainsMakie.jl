@@ -9,7 +9,8 @@ export trankplot, trankplot!
 export ridgeline, ridgeline!
 export forestplot, forestplot!
 export autocorplot, autocorplot!
-export plot # is this type piracy because I don't own the type Chains?
+export meanplot, meanplot!
+export plot # FIXME type piracy because I don't own Chains!
 
 @compat public chainsdensity, chainsdensity!
 @compat public chainshist, chainshist!
@@ -24,6 +25,7 @@ include("trankplot.jl")
 include("ridgeline.jl")
 include("forestplot.jl")
 include("autocorplot.jl")
+include("meanplot.jl")
 include("plot.jl")
 
 end

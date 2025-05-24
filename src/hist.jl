@@ -3,7 +3,7 @@
         color = Makie.wong_colors(),
         bins = 15,
         alpha = 0.4,
-        linewidth = 1,
+        linewidth = 1.5,
     )
 end
 
@@ -28,7 +28,7 @@ function Makie.hist(chains::Chains, parameters; hidey=true, kwargs...)
     for (i, parameter) in enumerate(parameters)
         ax = Axis(fig[i, 1])
         hidex = i < length(parameters)
-        _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter)
+        _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter) # FIXME don't do this hidex hidey thing
         chainshist!(chains[:, parameter, :]; kwargs...)
     end
     return fig

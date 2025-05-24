@@ -29,10 +29,15 @@ function Makie.plot!(tp::TrankPlot{<:Tuple{<:AbstractMatrix}})
 end
 
 # TODO adjust decoration hiding based on loop
-function trankplot(chains::Chains, parameters; kwargs...)
-    fig = Figure()
+function trankplot(chains::Chains, parameters; figure = nothing, kwargs...)
+    color = get_colors(size(chains[:, parameters, :], 3))
+
+    if !(figure isa Figure)
+        figure = Figure(size = autosize(chains[:, parameters, :]))
+    end
+
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1], ylabel = string(parameter))
+        ax = Axis(figure[i, 1], ylabel = string(parameter))
         trankplot!(chains[:, parameter, :]; kwargs...)
     
         hideydecorations!(ax; label=false)
@@ -42,8 +47,10 @@ function trankplot(chains::Chains, parameters; kwargs...)
             ax.xlabel = "Iteration"
         end    
     end
+
+    chainslegend(figure, chains[:, parameters, :], color)
     
-    return fig
+    return figure
 end
 
 function bin_chain(mat::AbstractMatrix; bins = 20)
