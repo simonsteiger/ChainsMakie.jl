@@ -1,16 +1,14 @@
 @recipe(ChainsBarPlot) do scene
     Attributes(
-        color = Makie.wong_colors(),
+        color = :default,
+        colormap = :default,
         bins = 15,
     )
 end
 
 function Makie.plot!(bp::ChainsBarPlot{<:Tuple{<:AbstractMatrix}})
     mat = bp[1]
-
-    if size(mat[], 2) > length(bp.color[])
-        throw(error("Specify at least as many colors as there are chains."))
-    end
+    color = get_colors(size(mat[], 2); color = bp.color[], colormap = bp.colormap[])
 
     all(isinteger, mat[]) || throw(error("Use `hist` continuous parameters."))
     
@@ -18,19 +16,27 @@ function Makie.plot!(bp::ChainsBarPlot{<:Tuple{<:AbstractMatrix}})
         count_dict = countmap(ys)
         xs = collect(keys(count_dict))
         ys = collect(values(count_dict))
-        barplot!(bp, xs, ys; color = to_value(bp.color)[i])
+        barplot!(bp, xs, ys; color = color[i])
     end
     
     return bp
 end
 
-function Makie.barplot(chains::Chains, parameters; hidey=true, kwargs...)
-    fig = Figure()
+# FIXME drop `_axisdecorations!`
+function Makie.barplot(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
+    if !(figure isa Figure)
+        figure = Figure(size = autosize(chains[:, parameters, :]))
+    end
+
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(fig[i, 1])
+        ax = Axis(figure[i, 1])
         hidex = i < length(parameters)
         _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter) # FIXME don't do this hidex hidey thing
         chainsbarplot!(chains[:, parameter, :]; kwargs...)
     end
-    return fig
+
+    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
+    chainslegend(figure, chains[:, parameters, :], color)
+
+    return figure
 end
