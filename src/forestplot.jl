@@ -34,16 +34,19 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     return fp
 end
 
-function forestplot(chn::Chains, parameters; kwargs...)
-    samples = [vec(chn[:, parameter, :]) for parameter in parameters]
+function forestplot(chains::Chains, parameters; figure = nothing, kwargs...)
+    samples = [vec(chains[:, parameter, :]) for parameter in parameters]
 
-    fig = Figure()
-    ax = Axis(fig[1, 1])
+    if !(figure isa Figure)
+        figure = Figure(size = autosize(chains[:, parameters, :]))
+    end
+
+    ax = Axis(figure[1, 1])
     ax.yticks = (eachindex(parameters), reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
     plt = forestplot!(samples; kwargs...)
     
     # Legend using the quantiles entry from kwargs
 
-    return fig, ax, plt
+    return figure, ax, plt
 end
