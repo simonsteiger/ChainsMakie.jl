@@ -22,7 +22,7 @@ function get_colors(n; colormap = :viridis, threshold = 7)
     return Makie.wong_colors()[1:n]
 end
 
-function chainslegend(fig, chains, colors)
+function chainslegend(fig, chains, colors; per_bank = 5)
     _, nparams, nchains = size(chains)
     
     elems = [PolyElement(; color) for color in colors]
@@ -32,7 +32,7 @@ function chainslegend(fig, chains, colors)
     colpos = ncols > 1 ? range(1, ncols) : 1
     
     Legend(fig[nparams + 1, colpos], elems, labels, "Chain",
-        orientation = :horizontal, nbanks = nbanks(chains))
+        orientation = :horizontal, nbanks = nbanks(chains; per_bank))
     
     return nothing
 end
