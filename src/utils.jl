@@ -31,7 +31,7 @@ function chainslegend(fig, chains, colors; per_bank = 5)
     _, nparams, nchains = size(chains)
     
     elems = [PolyElement(; color) for color in colors]
-    labels = [string(i) for i in 1:nchains]
+    labels = string.(1:nchains)
     
     ncols = last(size(fig.layout))
     colpos = ncols > 1 ? range(1, ncols) : 1
@@ -42,7 +42,7 @@ function chainslegend(fig, chains, colors; per_bank = 5)
     return nothing
 end
 
-function autosize(chains; ncols = 1)
+function autosize(chains::Chains; ncols = 1)
     axis_size = 200
     legend_size = 40 + nbanks(chains) * 20
     width = 200 + ncols * 200

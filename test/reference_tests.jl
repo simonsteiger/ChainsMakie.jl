@@ -30,7 +30,7 @@ end
 
 reftest("forestplot median") do
     chns = testchains()
-    fig, ax, plt = forestplot(chns, [:A, :B])
+    fig, ax, plt = forestplot(chns, [:A, :B, :C, :D])
     return fig
 end
 
