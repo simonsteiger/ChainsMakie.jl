@@ -37,3 +37,5 @@ function Makie.hist(chains::Chains, parameters; figure = nothing, hidey=true, kw
 
     return figure
 end
+
+Makie.hist(chains::Chains; kwargs...) = hist(chains, names(chains); kwargs...)

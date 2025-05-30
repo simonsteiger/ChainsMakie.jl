@@ -51,3 +51,4 @@ function autocorplot(chains::Chains, parameters; figure = nothing, kwargs...)
     return figure
 end
 
+autocorplot(chains::Chains; kwargs...) = autocorplot(chains, names(chains); kwargs...)
