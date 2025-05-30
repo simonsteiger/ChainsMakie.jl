@@ -37,3 +37,5 @@ function Makie.density(chains::Chains, parameters; figure = nothing, hidey=true,
 
     return figure
 end
+
+Makie.density(chains::Chains; kwargs...) = density(chains, names(chains); kwargs...)

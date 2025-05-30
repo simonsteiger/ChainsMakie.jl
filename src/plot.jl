@@ -1,5 +1,4 @@
-function Makie.plot(chains::Chains; figure = nothing, kwargs...)
-    parameters = names(chains)
+function Makie.plot(chains::Chains, parameters; figure = nothing, kwargs...)
     _, nparams, nchains = size(chains)
     color = get_colors(nchains; kwargs...)
     
@@ -33,6 +32,8 @@ function Makie.plot(chains::Chains; figure = nothing, kwargs...)
     
     return figure
 end
+
+Makie.plot(chains::Chains; kwargs...) = plot(chains, names(chains); kwargs...)
 
 function Makie.plot(chains::Chains, f::Vararg{Function,N}; figure = nothing, kwargs...) where N
     for f_i in string.(f)

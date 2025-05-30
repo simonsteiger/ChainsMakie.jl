@@ -42,3 +42,5 @@ function traceplot(chains::Chains, parameters; figure = nothing, kwargs...)
     
     return figure
 end
+
+traceplot(chains::Chains; kwargs...) = traceplot(chains, names(chains); kwargs...)

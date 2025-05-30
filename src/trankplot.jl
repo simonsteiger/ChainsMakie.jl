@@ -50,6 +50,8 @@ function trankplot(chains::Chains, parameters; figure = nothing, kwargs...)
     return figure
 end
 
+trankplot(chains::Chains; kwargs...) = trankplot(chains, names(chains); kwargs...)
+
 function bin_chain(mat::AbstractMatrix; bins = 20)
     ranks = denserank(mat)
     rank_range = range(extrema(ranks)..., length = bins)

@@ -44,3 +44,5 @@ function meanplot(chains::Chains, parameters; figure = nothing, kwargs...)
 
     return figure
 end
+
+meanplot(chains::Chains; kwargs...) = meanplot(chains, names(chains); kwargs...)

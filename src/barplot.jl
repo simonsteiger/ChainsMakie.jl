@@ -40,3 +40,5 @@ function Makie.barplot(chains::Chains, parameters; figure = nothing, hidey=true,
 
     return figure
 end
+
+Makie.barplot(chains::Chains; kwargs...) = barplot(chains, names(chains); kwargs...)

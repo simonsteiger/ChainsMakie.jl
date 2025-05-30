@@ -21,7 +21,7 @@ function ridgeline(chn::Chains, parameters; figure = nothing, kwargs...)
     samples = [vec(chn[:, parameter, :]) for parameter in parameters]
 
     if !(figure isa Figure)
-        figure = Figure(size = (400, 150 * length(parameters)))
+        figure = Figure(size = (400, min(150 * length(parameters), 2000)))
     end
 
     ax = Axis(figure[1, 1])
@@ -32,4 +32,4 @@ function ridgeline(chn::Chains, parameters; figure = nothing, kwargs...)
     return figure, ax, plt
 end
 
-# TODO ridgeline!(chn, parameters) with and without passing axis
+ridgeline(chains::Chains; kwargs...) = ridgeline(chains, names(chains); kwargs...)
