@@ -38,7 +38,7 @@ Makie.plot(chains::Chains; kwargs...) = plot(chains, names(chains); kwargs...)
 function Makie.plot(chains::Chains, f::Vararg{Function,N}; figure = nothing, kwargs...) where N
     for f_i in string.(f)
         endswith(f_i, "!") ||
-            error("All functions in `f` must be mutating; pass `$(f_i)!` instead.")
+            error("All functions in `f` must be mutating. Got `$(f_i)`, pass `$(f_i)!` instead.")
     end
 
     parameters = names(chains)
