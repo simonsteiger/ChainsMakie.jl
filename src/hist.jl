@@ -20,6 +20,7 @@ function Makie.plot!(ch::ChainsHist{<:Tuple{<:AbstractMatrix}})
     return ch
 end
 
+# Type piracy, I own neither `hist` nor `Chains`?
 function Makie.hist(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -27,8 +28,14 @@ function Makie.hist(chains::Chains, parameters; figure = nothing, hidey=true, kw
 
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1])
-        hidex = i < length(parameters)
-        _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter) # FIXME don't do this hidex hidey thing
+        
+        hideydecorations!(ax; label=false)
+        if i < length(parameters)
+            hidexdecorations!(ax; grid=false)
+        else
+            ax.xlabel = "Parameter estimate"
+        end
+        
         chainshist!(chains[:, parameter, :]; kwargs...)
     end
 

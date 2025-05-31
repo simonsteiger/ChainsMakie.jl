@@ -19,7 +19,7 @@ function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
     return cd
 end
 
-# FIXME drop `_axisdecorations!`
+# Type piracy, I own neither `density` nor `Chains`?
 function Makie.density(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -27,8 +27,14 @@ function Makie.density(chains::Chains, parameters; figure = nothing, hidey=true,
 
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1])
-        hidex = i < length(parameters)
-        _axisdecorations!(ax, hidex, "Parameter estimate", hidey, parameter) # FIXME don't do this hidex hidey thing
+        
+        hideydecorations!(ax; label=false)
+        if i < length(parameters)
+            hidexdecorations!(ax; grid=false)
+        else
+            ax.xlabel = "Parameter estimate"
+        end
+
         chainsdensity!(chains[:, parameter, :]; kwargs...)
     end
 
