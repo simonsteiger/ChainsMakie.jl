@@ -21,13 +21,13 @@ function Makie.plot!(ch::ChainsHist{<:Tuple{<:AbstractMatrix}})
 end
 
 # Type piracy, I own neither `hist` nor `Chains`?
-function Makie.hist(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
+function Makie.hist(chains::Chains, parameters; figure = nothing, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
 
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(figure[i, 1])
+        ax = Axis(figure[i, 1], ylabel = string(parameter))
         
         hideydecorations!(ax; label=false)
         if i < length(parameters)

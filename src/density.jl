@@ -20,13 +20,13 @@ function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
 end
 
 # Type piracy, I own neither `density` nor `Chains`?
-function Makie.density(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
+function Makie.density(chains::Chains, parameters; figure = nothing, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
 
     for (i, parameter) in enumerate(parameters)
-        ax = Axis(figure[i, 1])
+        ax = Axis(figure[i, 1], ylabel = string(parameter))
         
         hideydecorations!(ax; label=false)
         if i < length(parameters)
