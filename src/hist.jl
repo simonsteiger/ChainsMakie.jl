@@ -1,3 +1,19 @@
+"""
+    chainshist(matrix)
+
+Plots the histogram of the samples for an iteration × chain `matrix`.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+chainshist(chains)
+```
+"""
 @recipe(ChainsHist) do scene
     Attributes(
         color = :default,
@@ -21,6 +37,23 @@ function Makie.plot!(ch::ChainsHist{<:Tuple{<:AbstractMatrix}})
 end
 
 # Type piracy, I own neither `hist` nor `Chains`?
+"""
+    hist(chains)
+    hist(chains, parameters)
+
+Plots the histogram of the samples for each chain and parameter.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+hist(chains)
+```
+"""
 function Makie.hist(chains::Chains, parameters; figure = nothing, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))

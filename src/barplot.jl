@@ -1,3 +1,20 @@
+"""
+    chainsbarplot(matrix)
+
+Plots a barplot of the distribution of parameter samples given an integer-valued iteration × chain matrix.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+samples = reshape(repeat(1:4, 300 ÷ 4 * 3 * 3), (300, 3, 3))
+chains = Chains(samples, [:A, :B, :C])
+chainsbarplot(chains[:, :B, :])
+```
+"""
 @recipe(ChainsBarPlot) do scene
     Attributes(
         color = :default,
@@ -10,7 +27,7 @@ function Makie.plot!(bp::ChainsBarPlot{<:Tuple{<:AbstractMatrix}})
     mat = bp[1]
     color = get_colors(size(mat[], 2); color = bp.color[], colormap = bp.colormap[])
 
-    all(isinteger, mat[]) || throw(error("Use `hist` continuous parameters."))
+    all(isinteger, mat[]) || error("Use `hist` for continuous parameters.")
     
     for (i, ys) in enumerate(eachcol(to_value(mat)))
         count_dict = countmap(ys)
@@ -23,6 +40,24 @@ function Makie.plot!(bp::ChainsBarPlot{<:Tuple{<:AbstractMatrix}})
 end
 
 # Type piracy, I own neither `barplot` nor `Chains`?
+"""
+    barplot(chains)
+    barplot(chains, parameters)
+
+Plots integer-valued samples for each chain and parameter in `chains`.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+samples = reshape(repeat(1:4, 300 ÷ 4 * 3 * 3), (300, 3, 3))
+chains = Chains(samples, [:A, :B, :C])
+barplot(chains)
+```
+"""
 function Makie.barplot(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))

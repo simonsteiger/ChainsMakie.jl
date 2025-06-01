@@ -1,16 +1,3 @@
-function _axisdecorations!(ax, hidex, xlabel, hidey, ylabel)
-    if hidey
-        ax.ylabel = ylabel
-    end
-    hideydecorations!(ax; label=false)
-    if hidex
-        hidexdecorations!(ax; grid=false)
-    else
-        ax.xlabel = xlabel
-    end
-    return ax
-end
-
 sdim(i) = v -> map(x -> x[i], v)
 
 function get_colors(n; color = :default, colormap = :default, threshold = 7)

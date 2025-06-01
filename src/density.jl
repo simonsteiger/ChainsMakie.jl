@@ -1,8 +1,24 @@
+"""
+    chainsdensity(matrix)
+
+Plots the density of the samples for an iteration × chain `matrix`.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+chainsdensity(chains[:, :B, :])
+```
+"""
 @recipe(ChainsDensity) do scene
     Attributes(
         color = :default,
         colormap = :default,
-        strokewidth = 1,
+        strokewidth = 1.0,
         alpha = 0.4,
     )
 end
@@ -20,6 +36,26 @@ function Makie.plot!(cd::ChainsDensity{<:Tuple{<:AbstractMatrix}})
 end
 
 # Type piracy, I own neither `density` nor `Chains`?
+"""
+    density(chains)
+    density(chains, parameters)
+
+Plots the density of the samples for each chain and parameter.
+
+Specific attributes to `density` for `Chains` are:
+- `lags = 0:20`: The lags at which autocorrelations should be calculated.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+density(chains)
+```
+"""
 function Makie.density(chains::Chains, parameters; figure = nothing, kwargs...)
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))

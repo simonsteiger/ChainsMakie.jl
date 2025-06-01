@@ -1,3 +1,21 @@
+"""
+    meanplot(chains)
+    meanplot(chains, parameters)
+    meanplot(matrix)
+
+Plots the running average of the samples for each chain and parameter or for an iteration × chains matrix.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+meanplot(chains)
+```
+"""
 @recipe(MeanPlot) do scene
     Attributes(
         color = :default,

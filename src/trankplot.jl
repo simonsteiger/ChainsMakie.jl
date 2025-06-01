@@ -1,3 +1,21 @@
+"""
+    trankplot(chains)
+    trankplot(chains, parameters)
+    trankplot(matrix)
+
+Plots the binned ranks of sampled values for each chain and parameter or for an iteration × chains matrix.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+trankplot(chains)
+```
+"""
 @recipe(TrankPlot) do scene
     Attributes(
         color = :default,
@@ -52,6 +70,7 @@ end
 
 trankplot(chains::Chains; kwargs...) = trankplot(chains, names(chains); kwargs...)
 
+"Create a matrix of binned sample ranks for a single parameter iteration × chain matrix."
 function bin_chain(mat::AbstractMatrix; bins = 20)
     ranks = denserank(mat)
     rank_range = range(extrema(ranks)..., length = bins)
@@ -64,14 +83,17 @@ function bin_chain(mat::AbstractMatrix; bins = 20)
     return out
 end
 
+"Find the midpoints between steps in a range."
 centers(x::StepRangeLen) = [mean(steps) for steps in zip(x, x[2:end])]
 
+# Pad the x axis to make `stairs!` look nice
 function padx!(r, xs)
     pushfirst!(xs, minimum(r))
     push!(xs, maximum(r))
     return xs
 end
 
+# Pad the y axis to make `stairs!` look nice
 function pady!(ys)
     pushfirst!(ys, first(ys))
     push!(ys, last(ys))
