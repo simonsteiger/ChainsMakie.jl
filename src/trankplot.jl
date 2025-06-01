@@ -72,14 +72,19 @@ trankplot(chains::Chains; kwargs...) = trankplot(chains, names(chains); kwargs..
 
 "Create a matrix of binned sample ranks for a single parameter iteration × chain matrix."
 function bin_chain(mat::AbstractMatrix; bins = 20)
+    # Rank samples and create bins into which the ranks will be grouped
     ranks = denserank(mat)
     rank_range = range(extrema(ranks)..., length = bins)
+    
+    
+    # Assign the ranks to the correct bin
     out = zeros(Int, bins - 1, size(ranks, 2))
     for (i, col) in enumerate(eachcol(ranks))
         for (j, (l, u)) in enumerate(zip(rank_range, rank_range[2:end]))
             out[j, i] = sum(x -> Base.isbetween(l, x, u), col)
         end
     end
+
     return out
 end
 

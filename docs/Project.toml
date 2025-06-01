@@ -1,0 +1,12 @@
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ChainsMakie = "6238e05f-8c43-4d02-a7cb-3e4ed3b20087"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
+MCMCChains = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
+
+[sources]
+ChainsMakie = {path = ".."}
+
+[compat]
+DocumenterVitepress = "0.2"

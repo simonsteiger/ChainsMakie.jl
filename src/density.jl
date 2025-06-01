@@ -42,9 +42,6 @@ end
 
 Plots the density of the samples for each chain and parameter.
 
-Specific attributes to `density` for `Chains` are:
-- `lags = 0:20`: The lags at which autocorrelations should be calculated.
-
 ## Attributes
 WIP
 
