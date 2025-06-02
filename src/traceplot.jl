@@ -1,3 +1,21 @@
+"""
+    traceplot(chains)
+    traceplot(chains, parameters)
+    traceplot(matrix)
+
+Plots the sampled values per iteration for each chain and parameter or for an iteration × chains matrix.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+traceplot(chains)
+```
+"""
 @recipe(TracePlot) do scene
     Attributes(
         color = :default,

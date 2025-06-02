@@ -1,5 +1,31 @@
 const default_coverage = [0.95, 0.90]
 
+"""
+    forestplot(chains)
+    forestplot(chains, parameters)
+    forestplot(vector_of_vectors)
+
+Plots a summary of the samples in `chains` for each parameter by showing a `point_summary` and the central interval containing a specified `coverage`.
+
+When passing a `vector_of_vectors`, each vector should contain the samples from all chains for one parameter.
+
+Specific attributes to `forestplot` are:
+- `coverage = $default_coverage`: The central intervals used to summarize the samples for each parameter.
+- `point_summary = :median`: The function used to calculate the point summary; must return a single number.
+- `min_width = 4`: The width of the lines showing the widest interval.
+- `max_width = 8`: The width of the lines showing the narrowest interval.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+forestplot(chains)
+```
+"""
 @recipe(ForestPlot) do scene
     Attributes(
         coverage = default_coverage,
@@ -10,7 +36,10 @@ const default_coverage = [0.95, 0.90]
     )
 end
 
+"Convert a central interval to two-sided quantile boundaries."
 coverage_to_quantiles(x) = 1 - (1 - x) / 2, (1 - x) / 2
+
+"Wrapper for `get_colors` which reserves the last color for `point_summary`."
 forest_colors(n; kwargs...) = first(get_colors(n + 1; threshold = 0, kwargs...), n)
 
 function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}})

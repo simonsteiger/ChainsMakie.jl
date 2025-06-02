@@ -1,3 +1,24 @@
+"""
+    autocorplot(chains)
+    autocorplot(chains, parameters)
+    autocorplot(matrix)
+
+Plots the autocorrelations of the samples for each chain and parameter or for an iteration × chains matrix.
+
+Specific attributes to `autocorplot` are:
+- `lags = 0:20`: The lags at which autocorrelations should be calculated.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+autocorplot(chains)
+```
+"""
 @recipe(AutocorPlot) do scene
     Attributes(
         color = :default,

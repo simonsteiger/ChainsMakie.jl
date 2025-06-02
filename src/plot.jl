@@ -1,3 +1,35 @@
+# TODO improve how the supported functions are tracked, hard to maintain as is
+# On the other hand unlikely that new functions will be added frequently
+"""
+    plot(chains)
+    plot(chains, parameters)
+    plot(chains, functions...)
+    plot(chains, parameters, functions...)
+
+Plots a multi-column summary of all parameters, showing traceplots and densities.
+
+When also passing a vector of `parameters` as either strings or symbols, only those parameters will be visualized.
+
+The kinds and number of summary plots can be fully customized by splatting several mutating `functions...`. Currently supported functions are:
+
+- autocorplot!
+- chainsdensity!
+- chainshist!
+- meanplot!
+- traceplot!
+- trankplot!
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+plot(chains)
+```
+"""
 function Makie.plot(chains::Chains, parameters; figure = nothing, kwargs...)
     _, nparams, nchains = size(chains)
     color = get_colors(nchains; kwargs...)
@@ -35,28 +67,27 @@ end
 
 Makie.plot(chains::Chains; kwargs...) = plot(chains, names(chains); kwargs...)
 
-function Makie.plot(chains::Chains, f::Vararg{Function,N}; figure = nothing, kwargs...) where N
-    for f_i in string.(f)
+function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure = nothing, kwargs...) where N
+    for f_i in string.(funs)
         endswith(f_i, "!") ||
-            error("All functions in `f` must be mutating. Got `$(f_i)`, pass `$(f_i)!` instead.")
+            error("All functions must be mutating. Got `$(f_i)`, pass `$(f_i)!` instead.")
     end
 
-    parameters = names(chains)
     _, nparams, nchains = size(chains)
     
     if !(figure isa Figure)
-        figure = Figure(size = autosize(chains; ncols = length(f)))
+        figure = Figure(size = autosize(chains; ncols = N))
     end
     
-    for i in 1:nparams * length(f)
-        coord = fldmod1(i, length(f))
+    for i in 1:nparams * N
+        coord = fldmod1(i, N)
         param_idx = first(coord)
 
         mat = chains[:, param_idx, :]
         ax = Axis(figure[coord...])
 
         
-        if i % length(f) == 1
+        if i % N == 1
             ax.ylabel = string(parameters[param_idx])
         end
         hideydecorations!(ax; label = false)
@@ -66,23 +97,27 @@ function Makie.plot(chains::Chains, f::Vararg{Function,N}; figure = nothing, kwa
         end
 
         # TODO automatically switch to barplot for integer parameters
-        if i % length(f) == 0
-            last(f)(mat; kwargs...)
-            ax.xlabel = last(_xlabel(f))
+        if i % N == 0
+            last(funs)(mat; kwargs...)
+            ax.xlabel = last(_xlabel(funs))
             continue
         end
 
-        for j in eachindex(f)
-            if i % length(f) == j
-                f[j](mat; kwargs...)
-                ax.xlabel = _xlabel(f)[j]
+        for j in eachindex(funs)
+            if i % N == j
+                funs[j](mat; kwargs...)
+                ax.xlabel = _xlabel(funs)[j]
             end
         end
     end
 
-    per_bank = length(f) > 2 ? 8 : 5
+    per_bank = N > 2 ? 8 : 5
     color = get_colors(nchains; kwargs...)
     chainslegend(figure, chains, color; per_bank)
     
     return figure
+end
+
+function Makie.plot(chains::Chains, funs::Vararg{Function,N}; kwargs...) where N
+    return Makie.plot(chains, names(chains), funs...; kwargs...)
 end

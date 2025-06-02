@@ -1,4 +1,23 @@
-# Ridgeline should only require a ... array of arrays? Then we have a special method for chains
+"""
+    ridgeline(chains)
+    ridgeline(chains, parameters)
+    ridgeline(vector_of_vectors)
+
+Plots the densities of the samples for each parameter in a single axis by stacking them vertically.
+
+When passing a `vector_of_vectors`, each vector should contain the samples from all chains for one parameter.
+
+## Attributes
+WIP
+
+## Example
+
+```julia
+using CairoMakie, ChainsMakie, MCMCChains
+chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+ridgeline(chains)
+```
+"""
 @recipe(RidgeLine) do scene
     Attributes(
         color = Makie.wong_colors()[1],
