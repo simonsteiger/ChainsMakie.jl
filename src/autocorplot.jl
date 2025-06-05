@@ -44,8 +44,8 @@ function Makie.plot!(ap::AutocorPlot{<:Tuple{<:AbstractMatrix}})
     return ap
 end
 
-function autocorplot(chains::Chains, parameters; figure = nothing, kwargs...)
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
+function autocorplot(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, lags = 0:20, linewidth = 1.5, alpha = 1.0)
 
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -55,7 +55,7 @@ function autocorplot(chains::Chains, parameters; figure = nothing, kwargs...)
         ax1 = Axis(figure[i, 1], ylabel = string(parameter))
         ax2 = Axis(figure[i, 1], ylabel = "Autocorrelation", yaxisposition = :right)
         
-        autocorplot!(chains[:, parameter, :]; kwargs...)
+        autocorplot!(chains[:, parameter, :]; lags, linewidth, alpha)
         
         hideydecorations!(ax1; label=false)
         hidexdecorations!(ax1)
@@ -66,10 +66,13 @@ function autocorplot(chains::Chains, parameters; figure = nothing, kwargs...)
         end    
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
+    color = get_colors(size(chains[:, parameters, :], 3); color, colormap)
     chainslegend(figure, chains[:, parameters, :], color)
     
     return figure
 end
 
-autocorplot(chains::Chains; kwargs...) = autocorplot(chains, names(chains); kwargs...)
+function autocorplot(chains::Chains; figure = nothing, color = :default,
+    colormap = :default, lags = 0:20, linewidth = 1.5, alpha = 1.0)
+    return autocorplot(chains, names(chains); figure, color, colormap, lags, linewidth, alpha)
+end

@@ -40,6 +40,12 @@ reftest("two autocorplots") do
     return fig
 end
 
+reftest("autocorplots lags") do
+    chns = testchains()
+    fig = autocorplot(chns, ["A", "B"]; lags = 0:5:100)
+    return fig
+end
+
 reftest("two meanplots") do
     chns = testchains()
     fig = meanplot(chns, ["A", "B"])
