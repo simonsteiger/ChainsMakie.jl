@@ -54,7 +54,9 @@ chains = Chains(randn(300, 3, 3), [:A, :B, :C])
 hist(chains)
 ```
 """
-function Makie.hist(chains::Chains, parameters; figure = nothing, kwargs...)
+function Makie.hist(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, bins = 15, alpha = 0.4, linewidth = 1.5)
+    
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
@@ -69,11 +71,11 @@ function Makie.hist(chains::Chains, parameters; figure = nothing, kwargs...)
             ax.xlabel = "Parameter estimate"
         end
         
-        chainshist!(chains[:, parameter, :]; kwargs...)
+        chainshist!(chains[:, parameter, :]; color, colormap, bins, alpha, linewidth)
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
 
     return figure
 end

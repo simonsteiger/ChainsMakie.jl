@@ -37,7 +37,9 @@ function Makie.plot!(mp::MeanPlot{<:Tuple{<:AbstractMatrix}})
     return mp
 end
 
-function meanplot(chains::Chains, parameters; figure = nothing, kwargs...)
+function meanplot(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, linewidth = 1.5, alpha = 1.0)
+
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
@@ -46,7 +48,7 @@ function meanplot(chains::Chains, parameters; figure = nothing, kwargs...)
         ax1 = Axis(figure[i, 1], ylabel = string(parameter))
         ax2 = Axis(figure[i, 1], ylabel = "Mean", yaxisposition = :right)
 
-        meanplot!(chains[:, parameter, :]; kwargs...)
+        meanplot!(chains[:, parameter, :]; color, colormap, linewidth, alpha)
 
         hideydecorations!(ax1; label=false)
         hidexdecorations!(ax1)
@@ -57,8 +59,8 @@ function meanplot(chains::Chains, parameters; figure = nothing, kwargs...)
         end
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
 
     return figure
 end

@@ -45,14 +45,16 @@ function Makie.plot!(tp::TrankPlot{<:Tuple{<:AbstractMatrix}})
     return tp
 end
 
-function trankplot(chains::Chains, parameters; figure = nothing, kwargs...)
+function trankplot(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, linewidth = 1.5, bins = 20, alpha = 1.0)
+    
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
 
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1], ylabel = string(parameter))
-        trankplot!(chains[:, parameter, :]; kwargs...)
+        trankplot!(chains[:, parameter, :]; color, colormap, linewidth, bins, alpha)
     
         hideydecorations!(ax; label=false)
         if i < length(parameters)
@@ -62,20 +64,19 @@ function trankplot(chains::Chains, parameters; figure = nothing, kwargs...)
         end    
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
     
     return figure
 end
 
 trankplot(chains::Chains; kwargs...) = trankplot(chains, names(chains); kwargs...)
 
-"Create a matrix of binned sample ranks for a single parameter iteration × chain matrix."
+# Create a matrix of binned sample ranks for a single parameter iteration × chain matrix.
 function bin_chain(mat::AbstractMatrix; bins = 20)
     # Rank samples and create bins into which the ranks will be grouped
     ranks = denserank(mat)
     rank_range = range(extrema(ranks)..., length = bins)
-    
     
     # Assign the ranks to the correct bin
     out = zeros(Int, bins - 1, size(ranks, 2))
@@ -88,7 +89,7 @@ function bin_chain(mat::AbstractMatrix; bins = 20)
     return out
 end
 
-"Find the midpoints between steps in a range."
+# Find the midpoints between steps in a range.
 centers(x::StepRangeLen) = [mean(steps) for steps in zip(x, x[2:end])]
 
 # Pad the x axis to make `stairs!` look nice

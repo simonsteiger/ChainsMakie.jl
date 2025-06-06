@@ -58,7 +58,9 @@ chains = Chains(samples, [:A, :B, :C])
 barplot(chains)
 ```
 """
-function Makie.barplot(chains::Chains, parameters; figure = nothing, hidey=true, kwargs...)
+function Makie.barplot(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, bins = 15)
+    
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
@@ -73,11 +75,11 @@ function Makie.barplot(chains::Chains, parameters; figure = nothing, hidey=true,
             ax.xlabel = "Parameter estimate"
         end
 
-        chainsbarplot!(chains[:, parameter, :]; kwargs...)
+        chainsbarplot!(chains[:, parameter, :]; color, colormap, bins)
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
 
     return figure
 end

@@ -37,7 +37,9 @@ function Makie.plot!(tp::TracePlot{<:Tuple{<:AbstractMatrix}})
     return tp
 end
 
-function traceplot(chains::Chains, parameters; figure = nothing, kwargs...)
+function traceplot(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, linewidth = 1.5, alpha = 0.8)
+
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
@@ -45,7 +47,7 @@ function traceplot(chains::Chains, parameters; figure = nothing, kwargs...)
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1], ylabel = string(parameter))
         
-        traceplot!(chains[:, parameter, :]; kwargs...)
+        traceplot!(chains[:, parameter, :]; color, colormap, linewidth, alpha)
         
         hideydecorations!(ax; label=false)
         if i < length(parameters)
@@ -55,8 +57,8 @@ function traceplot(chains::Chains, parameters; figure = nothing, kwargs...)
         end    
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
     
     return figure
 end

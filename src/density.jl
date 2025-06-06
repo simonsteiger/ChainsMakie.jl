@@ -53,7 +53,9 @@ chains = Chains(randn(300, 3, 3), [:A, :B, :C])
 density(chains)
 ```
 """
-function Makie.density(chains::Chains, parameters; figure = nothing, kwargs...)
+function Makie.density(chains::Chains, parameters; figure = nothing, color = :default,
+    colormap = :default, strokewidth = 1.0, alpha = 0.4)
+
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
     end
@@ -68,11 +70,11 @@ function Makie.density(chains::Chains, parameters; figure = nothing, kwargs...)
             ax.xlabel = "Parameter estimate"
         end
 
-        chainsdensity!(chains[:, parameter, :]; kwargs...)
+        chainsdensity!(chains[:, parameter, :]; color, colormap, strokewidth, alpha)
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); kwargs...)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
 
     return figure
 end
