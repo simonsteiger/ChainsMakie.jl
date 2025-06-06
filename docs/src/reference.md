@@ -41,7 +41,11 @@ You can choose which coverage intervals should be plotted by passing a custom ve
 The proportion outside the `coverage` will be distributed equally on the lower and upper tails of the summarised distribution.
 
 ```@example
+using ChainsMakie, CairoMakie 
+import MCMCChains: Chains
+
 chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+
 fig, ax, plt = forestplot(chains; coverage = [0.99, 0.95, 0.89])
 ```
 
