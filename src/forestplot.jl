@@ -66,7 +66,7 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     end
 
     points = fp.point_summary[].(samples[])
-    if !(points isa Vector{Float64})
+    if !(points isa Vector{<:Real})
         throw(error("Calling `point_summary` on a Vector must return a Float64."))
     end
 

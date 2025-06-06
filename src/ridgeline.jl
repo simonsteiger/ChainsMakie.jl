@@ -21,7 +21,7 @@ ridgeline(chains)
 @recipe(RidgeLine) do scene
     Attributes(
         color = first(Makie.wong_colors()),
-        strokewidth = 1, 
+        strokewidth = 1.0, 
         strokecolor = first(Makie.wong_colors()),
         alpha = 0.4,
     )
