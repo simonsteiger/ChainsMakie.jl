@@ -14,6 +14,17 @@ function get_colors(n; color = :default, colormap = :default, threshold = 7)
     return colors
 end
 
+function get_colors_kwargs(chains, kwargs)
+    if haskey(kwargs, :color) && haskey(kwargs, :colormap)
+        error("Specify only one of `color` or `colormap`.")
+    elseif haskey(kwargs, :color)
+        return get_colors(size(chains, 3); color = kwargs[:color])
+    elseif haskey(kwargs, :colormap)
+        return get_colors(size(chains, 3); colormap = kwargs[:colormap])
+    end
+    return get_colors(size(chains, 3))
+end
+
 function chainslegend(fig, chains, colors; per_bank = 5)
     _, nparams, nchains = size(chains)
     

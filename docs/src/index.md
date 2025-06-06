@@ -34,7 +34,8 @@ hero:
 Inspecting the MCMC chains visually is a key part of the workflow, and ChainsMakie.jl provides a set of tools to simplify this task.
 
 ```@example
-using ChainsMakie, CairoMakie, MCMCChains
+using ChainsMakie, CairoMakie
+import MCMCChains: Chains
 
 chains = Chains(randn(300, 3, 3), [:A, :B, :C])
 
