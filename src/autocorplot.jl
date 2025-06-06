@@ -72,7 +72,4 @@ function autocorplot(chains::Chains, parameters; figure = nothing, color = :defa
     return figure
 end
 
-function autocorplot(chains::Chains; figure = nothing, color = :default,
-    colormap = :default, lags = 0:20, linewidth = 1.5, alpha = 1.0)
-    return autocorplot(chains, names(chains); figure, color, colormap, lags, linewidth, alpha)
-end
+autocorplot(chains::Chains; kwargs...) = autocorplot(chains, names(chains); kwargs...)

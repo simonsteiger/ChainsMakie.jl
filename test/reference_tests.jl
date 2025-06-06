@@ -42,7 +42,8 @@ end
 
 reftest("autocorplots lags") do
     chns = testchains()
-    fig = autocorplot(chns, ["A", "B"]; lags = 0:5:100)
+    sub_chns = chns[:, [:A, :B], :]
+    fig = autocorplot(sub_chns; lags = 0:5:100)
     return fig
 end
 
