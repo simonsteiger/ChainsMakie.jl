@@ -82,7 +82,7 @@ Defaults to the `1.5`.
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 3, 5), [:A, :B, :C, :D, :E])
+chains = Chains(randn(300, 5, 3), [:A, :B, :C, :D, :E])
 
 fig = autocorplot(chains; linewidth = 1.0)
 
@@ -99,7 +99,7 @@ Defaults to `1.0`.
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 3, 5), [:A, :B, :C, :D, :E])
+chains = Chains(randn(300, 5, 3), [:A, :B, :C, :D, :E])
 
 fig = autocorplot(chains; alpha = 0.8)
 
@@ -160,7 +160,7 @@ Defaults to the `:viridis` palette.
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = density(chains; colormap = :plasma)
 
@@ -329,7 +329,7 @@ Defaults to `:viridis`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = hist(chains; colormap = :plasma)
 
@@ -414,7 +414,7 @@ Defaults to `:viridis`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = meanplot(chains; colormap = :plasma)
 
@@ -536,7 +536,7 @@ Defaults to `:viridis`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = traceplot(chains; colormap = :plasma)
 
@@ -559,7 +559,7 @@ Defaults to `0.8`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = trankplot(chains; linewidth = 1.0, alpha = 1.0)
 
@@ -610,7 +610,7 @@ Defaults to `:viridis`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = trankplot(chains; colormap = :plasma)
 
@@ -633,7 +633,7 @@ Defaults to `0.8`.
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 8, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 8), [:A, :B, :C])
 
 fig = trankplot(chains; linewidth = 1.0, alpha = 1.0)
 
