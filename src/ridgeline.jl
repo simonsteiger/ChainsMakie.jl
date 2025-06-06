@@ -20,9 +20,9 @@ ridgeline(chains)
 """
 @recipe(RidgeLine) do scene
     Attributes(
-        color = Makie.wong_colors()[1],
+        color = first(Makie.wong_colors()),
         strokewidth = 1, 
-        strokecolor = Makie.wong_colors()[1],
+        strokecolor = first(Makie.wong_colors()),
         alpha = 0.4,
     )
 end
@@ -36,7 +36,9 @@ function Makie.plot!(rl::RidgeLine{<:Tuple{<:AbstractVector{<:AbstractVector}}})
     return rl
 end
 
-function ridgeline(chn::Chains, parameters; figure = nothing, kwargs...)
+function ridgeline(chn::Chains, parameters; figure = nothing, color = first(Makie.wong_colors()),
+    strokewidth = 1, strokecolor = first(Makie.wong_colors()), alpha = 0.4)
+    
     samples = [vec(chn[:, parameter, :]) for parameter in parameters]
 
     if !(figure isa Figure)
@@ -46,7 +48,7 @@ function ridgeline(chn::Chains, parameters; figure = nothing, kwargs...)
     ax = Axis(figure[1, 1])
     ax.yticks = (eachindex(parameters) ./ 2, reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
-    plt = ridgeline!(samples; kwargs...)
+    plt = ridgeline!(samples; color, strokewidth, strokecolor, alpha)
 
     return figure, ax, plt
 end

@@ -55,7 +55,7 @@ function autocorplot(chains::Chains, parameters; figure = nothing, color = :defa
         ax1 = Axis(figure[i, 1], ylabel = string(parameter))
         ax2 = Axis(figure[i, 1], ylabel = "Autocorrelation", yaxisposition = :right)
         
-        autocorplot!(chains[:, parameter, :]; lags, linewidth, alpha)
+        autocorplot!(chains[:, parameter, :]; lags, color, colormap, linewidth, alpha)
         
         hideydecorations!(ax1; label=false)
         hidexdecorations!(ax1)
@@ -66,8 +66,8 @@ function autocorplot(chains::Chains, parameters; figure = nothing, color = :defa
         end    
     end
 
-    color = get_colors(size(chains[:, parameters, :], 3); color, colormap)
-    chainslegend(figure, chains[:, parameters, :], color)
+    colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
+    chainslegend(figure, chains[:, parameters, :], colors)
     
     return figure
 end

@@ -1,5 +1,9 @@
-# TODO improve how the supported functions are tracked, hard to maintain as is
+# TODO Improve how the supported functions are tracked, hard to maintain as is
 # On the other hand unlikely that new functions will be added frequently
+
+# TODO Is it possible to allow passing kwargs to `plot` and then forward them to the right
+# function in the Vararg version of `plot`?
+# Outside the scope of my abilities, but it's definitely a bonus feature either way
 """
     plot(chains)
     plot(chains, parameters)
@@ -12,12 +16,12 @@ When also passing a vector of `parameters` as either strings or symbols, only th
 
 The kinds and number of summary plots can be fully customized by splatting several mutating `functions...`. Currently supported functions are:
 
-- autocorplot!
-- chainsdensity!
-- chainshist!
-- meanplot!
-- traceplot!
-- trankplot!
+- `autocorplot!`
+- `chainsdensity!`
+- `chainshist!`
+- `meanplot!`
+- `traceplot!`
+- `trankplot!`
 
 ## Attributes
 WIP
@@ -30,9 +34,8 @@ chains = Chains(randn(300, 3, 3), [:A, :B, :C])
 plot(chains)
 ```
 """
-function Makie.plot(chains::Chains, parameters; figure = nothing, kwargs...)
+function Makie.plot(chains::Chains, parameters; figure = nothing, color = :default, colormap = :default)
     _, nparams, nchains = size(chains)
-    color = get_colors(nchains; kwargs...)
     
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains; ncols = 2))
@@ -60,7 +63,8 @@ function Makie.plot(chains::Chains, parameters; figure = nothing, kwargs...)
         hideydecorations!(ax; label = false)
     end
 
-    chainslegend(figure, chains, color)
+    colors = get_colors(nchains; color, colormap)
+    chainslegend(figure, chains, colors)
     
     return figure
 end
