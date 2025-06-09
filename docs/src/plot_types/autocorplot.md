@@ -44,7 +44,7 @@ Defaults to Makie's [`wong_colors`](https://docs.makie.org/dev/explanations/colo
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig = autocorplot(chains; color = first(Makie.to_colormap(:tab20), 3))
+fig = autocorplot(chains; color = first(Makie.to_colormap(:tab20), 2))
 fig
 ```
 
@@ -71,7 +71,7 @@ Defaults to `1.5`.
 ```@example
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
-chains = Chains(randn(300, 3, 5), [:A, :B, :C])
+chains = Chains(randn(300, 2, 6), [:A, :B])
 fig = autocorplot(chains; linewidth = 1.0)
 fig
 ```
@@ -85,7 +85,7 @@ Defaults to `1.0`.
 ```@example
 using ChainsMakie, CairoMakie 
 import MCMCChains: Chains
-chains = Chains(randn(300, 3, 5), [:A, :B, :C])
+chains = Chains(randn(300, 2, 6), [:A, :B])
 fig = autocorplot(chains; alpha = 0.8)
 fig
 ```

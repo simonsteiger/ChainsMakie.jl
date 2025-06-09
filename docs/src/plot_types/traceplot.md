@@ -33,7 +33,7 @@ Defaults to Makie's [`wong_colors`](https://docs.makie.org/dev/explanations/colo
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig = traceplot(chains; color = first(Makie.to_colormap(:tab20), 3))
+fig = traceplot(chains; color = first(Makie.to_colormap(:tab20), 2))
 fig
 ```
 
