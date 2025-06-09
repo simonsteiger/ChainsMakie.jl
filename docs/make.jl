@@ -16,7 +16,6 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Reference" => "reference.md",
         "Introduction" => "introduction.md",
         "Composing plots" => "composing_plots.md",
         "Plot types" => [
