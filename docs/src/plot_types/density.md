@@ -17,6 +17,15 @@ fig = density(chains)
 fig
 ```
 
+It is possible to plot a subset of the parameters by passing their names as the second argument:
+
+```@example
+using ChainsMakie, CairoMakie 
+import MCMCChains: Chains
+chains = Chains(randn(300, 3, 4), [:A, :B, :C])
+density(chains, [:A, :B])
+```
+
 ## Attributes
 
 ### `color`

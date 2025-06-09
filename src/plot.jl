@@ -35,17 +35,19 @@ plot(chains)
 ```
 """
 function Makie.plot(chains::Chains, parameters; figure = nothing, color = :default, colormap = :default)
-    _, nparams, nchains = size(chains)
+    sub_chains = chains[:, parameters, :]
+    
+    _, nparams, nchains = size(sub_chains)
     
     if !(figure isa Figure)
-        figure = Figure(size = autosize(chains; ncols = 2))
+        figure = Figure(size = autosize(sub_chains; ncols = 2))
     end
     
     for i in 1:nparams * 2
         coord = fldmod1(i, 2)
         param_idx = first(coord)
 
-        mat = chains[:, param_idx, :]
+        mat = sub_chains[:, param_idx, :]
         ax = Axis(figure[coord...])
         if iszero(i % 2)
             all(isinteger, mat) ? chainsbarplot!(mat; color) : chainsdensity!(mat; color)
@@ -64,7 +66,7 @@ function Makie.plot(chains::Chains, parameters; figure = nothing, color = :defau
     end
 
     colors = get_colors(nchains; color, colormap)
-    chainslegend(figure, chains, colors)
+    chainslegend(figure, sub_chains, colors)
     
     return figure
 end
@@ -77,17 +79,19 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
             error("All functions must be mutating. Got `$(f_i)`, pass `$(f_i)!` instead.")
     end
 
-    _, nparams, nchains = size(chains)
+    sub_chains = chains[:, parameters, :]
+
+    _, nparams, nchains = size(sub_chains[:, parameters, :])
     
     if !(figure isa Figure)
-        figure = Figure(size = autosize(chains; ncols = N))
+        figure = Figure(size = autosize(sub_chains[:, parameters, :]; ncols = N))
     end
     
     for i in 1:nparams * N
         coord = fldmod1(i, N)
         param_idx = first(coord)
 
-        mat = chains[:, param_idx, :]
+        mat = sub_chains[:, param_idx, :]
         ax = Axis(figure[coord...])
 
         
@@ -117,7 +121,7 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
 
     per_bank = N > 2 ? 8 : 5
     color = get_colors(nchains; kwargs...)
-    chainslegend(figure, chains, color; per_bank)
+    chainslegend(figure, sub_chains, color; per_bank)
     
     return figure
 end
