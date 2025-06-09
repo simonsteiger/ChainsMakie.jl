@@ -28,7 +28,7 @@ Defaults to Makie's [`wong_colors`](https://docs.makie.org/dev/explanations/colo
 using ChainsMakie, CairoMakie, StatsBase
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig = meanplot(chains; color = first(Makie.to_colormap(:tab20), 2))
+fig = meanplot(chains; color = first(Makie.to_colormap(:tab20), 4))
 fig
 ```
 
