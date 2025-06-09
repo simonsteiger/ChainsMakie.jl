@@ -1,4 +1,4 @@
-const default_coverage = [0.95, 0.90]
+const default_ci = [0.95, 0.90]
 
 """
     forestplot(chains)
@@ -10,7 +10,7 @@ Plots a summary of the samples in `chains` for each parameter by showing a `poin
 When passing a `vector_of_vectors`, each vector should contain the samples from all chains for one parameter.
 
 Specific attributes to `forestplot` are:
-- `coverage = $default_coverage`: The central intervals used to summarize the samples for each parameter.
+- `ci = $default_ci`: The central intervals used to summarize the samples for each parameter.
 - `point_summary = :median`: The function used to calculate the point summary; must return a single number.
 - `min_width = 4`: The width of the lines showing the widest interval.
 - `max_width = 8`: The width of the lines showing the narrowest interval.
@@ -28,7 +28,7 @@ forestplot(chains)
 """
 @recipe(ForestPlot) do scene
     Attributes(
-        coverage = default_coverage,
+        ci = default_ci,
         colormap = :viridis, # TODO allow passing a custom colormap and not just a symbol
         point_summary = median,
         min_width = 4,
@@ -37,7 +37,7 @@ forestplot(chains)
 end
 
 # Convert a central interval to two-sided quantile boundaries
-coverage_to_quantiles(x) = 1 - (1 - x) / 2, (1 - x) / 2
+ci_to_quantiles(x) = 1 - (1 - x) / 2, (1 - x) / 2
 
 # Wrapper for `get_colors` which reserves the last color for `point_summary`
 forest_colors(n; kwargs...) = first(get_colors(n + 1; threshold = 0, kwargs...), n)
@@ -45,15 +45,15 @@ forest_colors(n; kwargs...) = first(get_colors(n + 1; threshold = 0, kwargs...),
 function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}})
     samples = fp[1]
 
-    for coverage in fp.coverage[]
-        0 < coverage < 1 || error("Coverage must be between 0 and 1, got $coverage.")
+    for ci in fp.ci[]
+        0 < ci < 1 || error("Coverage must be between 0 and 1, got $ci.")
     end
     
-    sorted_qs = map(coverage_to_quantiles, sort(fp.coverage[], rev = true))
+    sorted_qs = map(ci_to_quantiles, sort(fp.ci[], rev = true))
 
     qs = [[quantile.(Ref(s_i), qs_i) for s_i in samples[]] for qs_i in sorted_qs]
 
-    colors = forest_colors(length(fp.coverage[]); colormap = fp.colormap[])
+    colors = forest_colors(length(fp.ci[]); colormap = fp.colormap[])
     
     linewidths = range(fp.min_width[], fp.max_width[], length = length(colors))
 
@@ -76,8 +76,15 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     return fp
 end
 
-function forestplot(chains::Chains, parameters; figure = nothing, coverage = default_coverage,
-    colormap = :viridis, point_summary = median, min_width = 4, max_width = 8)
+function forestplot(
+    chains::Chains,
+    parameters; figure = nothing,
+    ci = default_ci,
+    colormap = :viridis,
+    point_summary = median,
+    min_width = 4,
+    max_width = 8
+)
     samples = [vec(chains[:, parameter, :]) for parameter in parameters]
 
     if !(figure isa Figure)
@@ -87,9 +94,9 @@ function forestplot(chains::Chains, parameters; figure = nothing, coverage = def
     ax = Axis(figure[1, 1])
     ax.yticks = (eachindex(parameters), reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
-    plt = forestplot!(samples; coverage, point_summary, min_width, max_width, colormap)
+    plt = forestplot!(samples; ci, point_summary, min_width, max_width, colormap)
     
-    labels = @. string(round(Int, coverage * 100)) * "%"
+    labels = @. string(round(Int, ci * 100)) * "%"
     colors = forest_colors(length(labels))
     elems = [PolyElement(; color) for color in colors]
     Legend(figure[1, 2], elems, labels, "Quantiles", tellheight = false)

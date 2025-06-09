@@ -30,8 +30,8 @@ hero:
 
 # What is ChainsMakie.jl?
 
-[MCMC chains](https://turinglang.org/MCMCChains.jl/stable/) are common objects in probabilistic programming languages such as [Turing.jl](https://turinglang.org/).
-Inspecting the MCMC chains visually is a key part of the workflow, and ChainsMakie.jl provides a set of tools to simplify this task.
+ChainsMakie provides a set of tools to simplify the visualization of [MCMC chains](https://turinglang.org/MCMCChains.jl/stable/).
+MCMC chains are objects that contain the results of sampling algorithms used for Bayesian inference in probabilistic programming languages such as [Turing.jl](https://turinglang.org/).
 
 ```@example
 using ChainsMakie, CairoMakie
