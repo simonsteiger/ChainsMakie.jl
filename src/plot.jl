@@ -93,7 +93,6 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
 
         mat = sub_chains[:, param_idx, :]
         ax = Axis(figure[coord...])
-
         
         if i % N == 1
             ax.ylabel = string(parameters[param_idx])
