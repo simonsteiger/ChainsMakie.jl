@@ -48,13 +48,13 @@ function Makie.violin!(chains::Chains, parameters; color = :default, kwargs...)
         end
 
         if color == :default
-            colors = get_colors(size(chains, 2); color)
+            colors = get_colors(size(chains, 3); color)
             color_per_value = repeat(colors, inner = size(chains, 1))
             violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
             continue
         end
 
-        color_per_value = repeat(first(color, size(chains, 2)), inner = size(chains, 1))
+        color_per_value = repeat(first(color, size(chains, 3)), inner = size(chains, 1))
         violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
     end
 
