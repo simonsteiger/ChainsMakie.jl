@@ -51,7 +51,8 @@ Any function can be used so long as it returns a single `Real` number when appli
 Defaults to `median`.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
+import StatsBase: mean
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
 fig, ax, plt = forestplot(chains; point_summary = mean)
@@ -65,7 +66,7 @@ Specifies the `colormap` to be used for coloring the different quantiles.
 Defaults to [`:viridis`](https://docs.makie.org/dev/explanations/colors#Colormaps).
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
 fig, ax, plt = forestplot(chains; colormap = :plasma)
@@ -85,7 +86,7 @@ Controls the `linewidth` of the widest interval.
 Defaults to `8`.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 5, 4), [:A, :B, :C, :D, :E])
 ci = [0.99, 0.95, 0.89, 0.8]

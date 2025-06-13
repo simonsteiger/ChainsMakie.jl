@@ -34,7 +34,7 @@ Specifies the `color`s to be used for coloring the histogram of each chain.
 Defaults to Makie's [`wong_colors`](https://docs.makie.org/dev/explanations/colors#Colormaps) palette and automatically switches to [`colormap = :viridis`](https://docs.makie.org/dev/explanations/colors#Colormaps) for more than seven chains.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
 fig = hist(chains; color = first(Makie.to_colormap(:tab20), 4))
@@ -48,7 +48,7 @@ Specifies the `colormap` to be used for coloring the histogram of each chain.
 Defaults to `:viridis`.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 8), [:A, :B])
 fig = hist(chains; colormap = :plasma)
@@ -60,7 +60,7 @@ fig
 Controls the number of bins used for each histogram.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
 fig = hist(chains; bins = 30)
@@ -76,7 +76,7 @@ Controls the `linewidth` of the contour around each histogram.
 Controls the opacity of each histogram.
 
 ```@example
-using ChainsMakie, CairoMakie, StatsBase
+using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
 fig = hist(chains; linewidth = 0.0, alpha = 0.8)
