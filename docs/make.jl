@@ -27,6 +27,7 @@ makedocs(;
             "Ridgeline" => "plot_types/ridgeline.md",
             "Traceplot" => "plot_types/traceplot.md",
             "Trankplot" => "plot_types/trankplot.md",
+            "Violin" => "plot_types/violin.md",
         ],
         "api.md",
     ],

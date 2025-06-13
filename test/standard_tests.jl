@@ -31,3 +31,9 @@ end
         e isa ErrorException
     end
 end
+
+@testset "Mutating versions" begin
+    chns = testchains()
+    fig = Figure()
+    @test violin!(chns) isa Figure
+end

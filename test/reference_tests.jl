@@ -53,6 +53,12 @@ reftest("two meanplots") do
     return fig
 end
 
+reftest("violin") do
+    chns = testchains()
+    fig = violin(chns, ["A", "B"])
+    return fig
+end
+
 reftest("plot vanilla") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)
@@ -87,5 +93,13 @@ end
 reftest("plot custom funs") do
     chns = testchains(continuous_samples(p = 2, c = 6))
     fig = plot(chns, trankplot!, chainshist!, meanplot!)
+    return fig
+end
+
+reftest("plot custom funs and colors") do
+    chns = testchains(continuous_samples(p = 2, c = 6))
+    color = first(Makie.to_colormap(:tab20), 10)
+    funs = [trankplot!, chainshist!, meanplot!]
+    fig = plot(chns, funs...; color)
     return fig
 end

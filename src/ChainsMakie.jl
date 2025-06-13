@@ -3,7 +3,7 @@ module ChainsMakie
 using Makie, MCMCChains, Compat
 using StatsBase, Statistics
 
-export density, hist, barplot
+export density, hist, barplot, violin
 export traceplot, traceplot!
 export trankplot, trankplot!
 export ridgeline, ridgeline!
@@ -15,6 +15,7 @@ export plot # FIXME type piracy because I don't own Chains!
 @compat public chainsdensity, chainsdensity!
 @compat public chainshist, chainshist!
 @compat public chainsbarplot, chainsbarplot!
+@compat public chainsviolin, chainsviolin!
 
 include("utils.jl")
 include("density.jl")
@@ -26,6 +27,7 @@ include("ridgeline.jl")
 include("forestplot.jl")
 include("autocorplot.jl")
 include("meanplot.jl")
+include("violin.jl")
 include("plot.jl")
 
 end
