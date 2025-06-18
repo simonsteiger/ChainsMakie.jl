@@ -10,8 +10,8 @@ colors = [
     [green, red, purple, purple],
 ]
 
-X = rand(MvNormal(ones(4) .+ 2.5, ones(4) .- 0.25), 100)
-Xt = permutedims(X)
+X = [rand(Normal(3.5, 0.75), 100) for _ in 1:4]
+Xt = reduce(hcat, X)
 
 fig = Figure(backgroundcolor = :transparent)
 ax1 = PolarAxis(fig[1, 2:3], backgroundcolor = :transparent)
@@ -26,4 +26,4 @@ for (ax, color) in zip([ax1, ax2, ax3], colors)
     hidespines!(ax)
 end
 
-save("src/assets/logo.svg", fig)
+save("src/assets/logo_test.svg", fig)
