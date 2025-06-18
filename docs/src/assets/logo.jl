@@ -13,10 +13,10 @@ colors = [
 X = rand(MvNormal(ones(4) .+ 2.5, ones(4) .- 0.25), 100)
 Xt = permutedims(X)
 
-fig = Figure()
-ax1 = PolarAxis(fig[1, 2:3])
-ax2 = PolarAxis(fig[2, 1:2])
-ax3 = PolarAxis(fig[2, 3:4])
+fig = Figure(backgroundcolor = :transparent)
+ax1 = PolarAxis(fig[1, 2:3], backgroundcolor = :transparent)
+ax2 = PolarAxis(fig[2, 1:2], backgroundcolor = :transparent)
+ax3 = PolarAxis(fig[2, 3:4], backgroundcolor = :transparent)
 
 for (ax, color) in zip([ax1, ax2, ax3], colors)
     traceplot!(ax, Xt; linewidth=0.75, color)
