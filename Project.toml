@@ -12,7 +12,7 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
 Compat = "4.16.0"
-MCMCChains = "6.0.7"
+MCMCChains = "6.0.7, 7"
 Makie = "0.22.4, 0.23"
 Statistics = "1.10"
 StatsBase = "0.34.4"
