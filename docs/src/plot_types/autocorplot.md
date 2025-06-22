@@ -2,7 +2,7 @@
 CurrentModule = ChainsMakie
 ```
 
-## `autocorplot`
+# `autocorplot`
 
 The [`autocorplot`](@ref) shows the autocorrelation of MCMC samples at different `lags`.
 
@@ -25,9 +25,9 @@ chains = Chains(randn(300, 3, 4), [:A, :B, :C])
 autocorplot(chains, [:A, :B])
 ```
 
-### Attributes
+## Attributes
 
-#### `lags`
+### `lags`
 
 Controls at which lags the autocorrelation will be calculated.
 
@@ -41,7 +41,7 @@ fig = autocorplot(chains; lags = 0:5:100)
 fig
 ```
 
-#### `color`
+### `color`
 
 Controls which `color`s will be used to color the samples from each chain.
 
@@ -55,7 +55,7 @@ fig = autocorplot(chains; color = first(Makie.to_colormap(:tab20), 4))
 fig
 ```
 
-#### `colormap`
+### `colormap`
 
 Controls which `colormap` will be used to color the samples from each chain.
 
@@ -69,7 +69,7 @@ fig = autocorplot(chains; colormap = :plasma)
 fig
 ```
 
-#### `linewidth`
+### `linewidth`
 
 Controls the `linewidth` of the autocorrelation plot of each chain.
 
@@ -83,7 +83,7 @@ fig = autocorplot(chains; linewidth = 1.0)
 fig
 ```
 
-#### `alpha`
+### `alpha`
 
 Controls the opacity of the autocorrelation plot of each chain.
 
