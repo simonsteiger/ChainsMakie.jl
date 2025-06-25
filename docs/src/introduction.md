@@ -20,6 +20,15 @@ chains = Chains(randn(300, 3, 4), [:A, :B, :C])
 plot(chains)
 ```
 
+If the model parameters are in a similar range, you might prefer linking the x-axes to give it an even cleaner look:
+
+```@example
+using ChainsMakie, CairoMakie
+import MCMCChains: Chains
+chains = Chains(randn(300, 3, 4), [:A, :B, :C])
+plot(chains; link_x = true)
+```
+
 For all plotting functions exported by `ChainsMakie`, it is possible to plot a subset of the parameters by passing the parameter names to be plotted as the second argument to the plotting function:
 
 ```@example

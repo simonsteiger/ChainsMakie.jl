@@ -3,7 +3,7 @@ sdim(i) = v -> map(x -> x[i], v)
 function get_colors(n; color = :default, colormap = :default, threshold = 7)
     all(!=(:default), [color, colormap]) && error("Specify only one of `color` or `colormap`.")
 
-    if color == :default && colormap != :default
+    if colormap != :default
         cm = Makie.to_colormap(colormap)
         idx = round.(Int, collect(range(1, length(cm), length = n)))
         return cm[idx]
