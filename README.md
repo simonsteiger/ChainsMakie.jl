@@ -6,7 +6,7 @@
 A package to plot MCMC Chains using Makie.jl
 
 > [!WARNING]  
-> This package is not yet registered. If you want to try it you will have to install it via `Pkg.add(url="https://github.com/simonsteiger/ChainsMakie.jl")`.
+> This package is not yet registered and still work in progress. If you want to try it you will have to install it via `Pkg.add(url="https://github.com/simonsteiger/ChainsMakie.jl")`.
 
 ## Example
 
