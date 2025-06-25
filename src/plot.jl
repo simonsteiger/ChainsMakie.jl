@@ -56,13 +56,18 @@ function Makie.plot(chains::Chains, parameters; figure = nothing, link_x = false
             ax.ylabel = string(parameters[param_idx])
         end
         
-        if param_idx < nparams
-            hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
-        else
+        hideydecorations!(ax; label = false)
+
+        if param_idx == nparams
             ax.xlabel = iszero(i % 2) ? "Parameter estimate" : "Iteration"
+            continue
         end
 
-        hideydecorations!(ax; label = false)
+        if link_x
+            hidexdecorations!(ax; grid = false)
+        else
+            hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
+        end
     end
 
     colors = get_colors(nchains; color, colormap)
@@ -87,6 +92,8 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
     sub_chains = chains[:, parameters, :]
 
     _, nparams, nchains = size(sub_chains[:, parameters, :])
+
+    xlabels = _xlabel(funs)
     
     if !(figure isa Figure)
         figure = Figure(size = autosize(sub_chains[:, parameters, :]; ncols = N))
@@ -105,20 +112,24 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
         hideydecorations!(ax; label = false)
 
         if param_idx < nparams
-            hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
+            if link_x
+                hidexdecorations!(ax; grid = false)
+            else
+                hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
+            end
         end
 
         # TODO automatically switch to barplot for integer parameters
         if i % N == 0
             last(funs)(mat; kwargs...)
-            ax.xlabel = last(_xlabel(funs))
+            ax.xlabel = last(xlabels) # Hidden if param_idx < nparams
             continue
         end
 
         for j in eachindex(funs)
             if i % N == j
                 funs[j](mat; kwargs...)
-                ax.xlabel = _xlabel(funs)[j]
+                ax.xlabel = xlabels[j] # Hidden if param_idx < nparams
             end
         end
     end
@@ -128,7 +139,7 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
     chainslegend(figure, sub_chains, color; per_bank)
 
     if link_x
-        axes = [only(contents(fig[i, 2])) for i in 1:nparams]
+        axes = [only(contents(figure[i, 2])) for i in 1:nparams]
         linkxaxes!(axes...)
     end
     
