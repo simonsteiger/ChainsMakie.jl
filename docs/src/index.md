@@ -37,9 +37,10 @@ MCMC chains are objects that contain the results of sampling algorithms used for
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 
-chains = Chains(randn(300, 3, 3), [:A, :B, :C])
+chains = Chains(randn(300, 3, 4), [:A, :B, :C])
 
-plot(chains)
+julia_quartet = [colorant"#4e63ae", colorant"#208921", colorant"#cc3333", colorant"#b352cc"]
+plot(chains; color = julia_quartet, link_x = true)
 ```
 
 ````@raw html
