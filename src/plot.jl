@@ -74,7 +74,7 @@ function Makie.plot(chains::Chains, parameters; figure = nothing, link_x = false
     chainslegend(figure, sub_chains, colors)
 
     if link_x
-        axes = [only(contents(figure[i, 2])) for i in 1:length(params)]
+        axes = [only(contents(figure[i, 2])) for i in 1:nparams]
         linkxaxes!(axes...)
     end
     
@@ -139,7 +139,7 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
     chainslegend(figure, sub_chains, color; per_bank)
 
     if link_x
-        axes = [only(contents(figure[i, 2])) for i in 1:length(params)]
+        axes = [only(contents(figure[i, 2])) for i in 1:nparams]
         linkxaxes!(axes...)
     end
     
