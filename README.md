@@ -10,7 +10,8 @@ A package to plot MCMC Chains using Makie.jl
 
 ## Example
 
-![chains plot example](example.svg)
+ChainsMakie provides several plotting functions to visually diagnose MCMC Chains.
+The `plot` function provides the standard visualisation showing a `traceplot` and a `density` plot for each parameter.
 
 ```julia
 using ChainsMakie, CairoMakie
@@ -21,6 +22,8 @@ chains = Chains(randn(300, 3, 4), [:A, :B, :C])
 julia_quartet = [colorant"#4e63ae", colorant"#208921", colorant"#cc3333", colorant"#b352cc"]
 plot(chains; color = julia_quartet, link_x = true)
 ```
+
+![chains plot example](example.svg)
 
 ## Features
 
