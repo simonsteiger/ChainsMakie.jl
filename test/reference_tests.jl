@@ -65,6 +65,14 @@ reftest("plot vanilla") do
     return fig
 end
 
+#=
+reftest("plot vanilla linkx") do
+    chns = testchains(continuous_samples(p = 2))
+    fig = plot(chns; link_x = true)
+    return fig
+end
+=#
+
 reftest("plot custom colors") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns; color = first(Makie.to_colormap(:tab20), 10))
