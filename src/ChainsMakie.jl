@@ -3,14 +3,16 @@ module ChainsMakie
 using Makie, MCMCChains, Compat
 using StatsBase, Statistics
 
-export density, hist, barplot, violin
 export traceplot, traceplot!
 export trankplot, trankplot!
 export ridgeline, ridgeline!
 export forestplot, forestplot!
 export autocorplot, autocorplot!
 export meanplot, meanplot!
-export plot # FIXME type piracy because I don't own Chains!
+
+# Exports below are type piracy because I don't own Chains?
+export density, hist, barplot, violin
+export plot
 
 @compat public chainsdensity, chainsdensity!
 @compat public chainshist, chainshist!

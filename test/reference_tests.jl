@@ -59,6 +59,12 @@ reftest("violin") do
     return fig
 end
 
+reftest("violin link x") do
+    chns = testchains()
+    fig = violin(chns, ["A", "B"], link_x = true)
+    return fig
+end
+
 reftest("plot vanilla") do
     chns = testchains(continuous_samples(p = 2))
     fig = plot(chns)
