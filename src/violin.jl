@@ -31,31 +31,59 @@ end
 
 # TODO this currently does not work with the way colors are passed
 # to all the other functions in ChainsMakie
-# so there will be integration problems with `plot(chains, funs...)`
+# so there will be integration problems with `plot(chains, funs...)` (once that happens)
 # The rest require a color vector which has length == size(chains, 1)
 # Here it is size(chains, 1) * size(chains, 2)
-function Makie.violin!(chains::Chains, parameters; color = :default, kwargs...)
+function Makie.violin!(chains::Chains, parameters; color = :default, link_x = false, kwargs...)
     fig = current_figure()
 
     for (i, parameter) in enumerate(parameters)
         ax = Axis(fig[i, 1], ylabel = string(parameter))
+        ax2 = Axis(fig[i, 1], ylabel = "Parameter estimate", yaxisposition = :right)
         
-        hideydecorations!(ax; label=false)
-        if i < length(parameters)
-            hidexdecorations!(ax; grid=false)
-        else
-            ax.xlabel = "Chain"
-        end
-
         if color == :default
             colors = get_colors(size(chains, 3); color)
             color_per_value = repeat(colors, inner = size(chains, 1))
-            violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
+            plt = violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
+        else
+            color_per_value = repeat(first(color, size(chains, 3)), inner = size(chains, 1))
+            plt = violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
+        end
+        
+        hideydecorations!(ax; label = false)
+        hidexdecorations!(ax)
+
+        orientation = to_value(Attributes(plt)[:orientation])
+        
+        if orientation == :horizontal
+            ax2.ylabel = "Chain"
+            hideydecorations!(ax2; label = false, ticklabels = false, ticks = false)
+            
+            if length(parameters) == i
+                ax2.xlabel = "Parameter estimate"
+                continue
+            end
+
+            if link_x
+                hidexdecorations!(ax; grid = false)
+            else
+                hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
+            end
+
             continue
         end
+        
+        if length(parameters) == i
+            hidexdecorations!(ax2; label = false, ticklabels = false, ticks = false)
+            ax2.xlabel = "Chain"
+        else
+            hidexdecorations!(ax2)
+        end
+    end
 
-        color_per_value = repeat(first(color, size(chains, 3)), inner = size(chains, 1))
-        violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
+    if link_x
+        axes = [last(contents(fig[i, 1])) for i in eachindex(parameters)]
+        linkxaxes!(axes...)
     end
 
     return fig

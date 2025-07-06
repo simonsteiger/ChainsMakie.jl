@@ -57,10 +57,10 @@ function autocorplot(chains::Chains, parameters; figure = nothing, color = :defa
         
         autocorplot!(chains[:, parameter, :]; lags, color, colormap, linewidth, alpha)
         
-        hideydecorations!(ax1; label=false)
+        hideydecorations!(ax1; label = false)
         hidexdecorations!(ax1)
         if i < length(parameters)
-            hidexdecorations!(ax2; grid=false)
+            hidexdecorations!(ax2; grid = false)
         else
             ax2.xlabel = "Lag"
         end    

@@ -55,6 +55,18 @@ end
 
 reftest("violin") do
     chns = testchains()
+    fig = violin(chns, ["A", "B"], orientation = :horizontal)
+    return fig
+end
+
+reftest("violin link x") do
+    chns = testchains()
+    fig = violin(chns, ["A", "B"], link_x = true, orientation = :horizontal)
+    return fig
+end
+
+reftest("violin vertical") do
+    chns = testchains()
     fig = violin(chns, ["A", "B"])
     return fig
 end
