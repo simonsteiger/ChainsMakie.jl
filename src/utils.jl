@@ -82,7 +82,7 @@ function _xlabel(f)
 end
 
 function setaxisdecorations!(ax, islast, xlabel, link_x)
-    hideydecorations!(ax; label=false)
+    hideydecorations!(ax; label = false)
 
     if islast
         ax.xlabel = xlabel
@@ -90,8 +90,8 @@ function setaxisdecorations!(ax, islast, xlabel, link_x)
     end
 
     if link_x
-        hidexdecorations!(ax; grid=false)
+        hidexdecorations!(ax; grid = false)
     else
-        hidexdecorations!(ax; grid=false, ticklabels=false, ticks=false)
+        hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
     end
 end
