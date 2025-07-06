@@ -55,7 +55,8 @@ hist(chains)
 ```
 """
 function Makie.hist(chains::Chains, parameters; figure = nothing, color = :default,
-    colormap = :default, bins = 15, alpha = 0.4, linewidth = 1.5)
+    colormap = :default, bins = 15, alpha = 0.4, linewidth = 1.5, link_x = false, 
+    legend_position = :bottom)
     
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -64,18 +65,14 @@ function Makie.hist(chains::Chains, parameters; figure = nothing, color = :defau
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1], ylabel = string(parameter))
         
-        hideydecorations!(ax; label=false)
-        if i < length(parameters)
-            hidexdecorations!(ax; grid=false)
-        else
-            ax.xlabel = "Parameter estimate"
-        end
-        
         chainshist!(chains[:, parameter, :]; color, colormap, bins, alpha, linewidth)
+
+        islast = length(parameters) == i
+        setaxisdecorations!(ax, islast, "Parameter estimate", link_x)
     end
 
     colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
-    chainslegend(figure, chains[:, parameters, :], colors)
+    chainslegend(figure, chains[:, parameters, :], colors; legend_position)
 
     return figure
 end

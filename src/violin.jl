@@ -57,19 +57,20 @@ function Makie.violin!(chains::Chains, parameters; color = :default, link_x = fa
         
         if orientation == :horizontal
             ax2.ylabel = "Chain"
-            hideydecorations!(ax2; label = false, ticklabels = false, ticks = false)
+            hideydecorations!(ax2, label = false, ticklabels = false, ticks = false)
             
             if length(parameters) == i
                 ax2.xlabel = "Parameter estimate"
                 continue
             end
-
+            
             if link_x
-                hidexdecorations!(ax; grid = false)
+                [hidexdecorations!(a; grid = false) for a in [ax, ax2]]
+                hideydecorations!(ax2; label = false)
             else
                 hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
             end
-
+            
             continue
         end
         

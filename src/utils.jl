@@ -31,17 +31,24 @@ function get_colors_kwargs(chains, kwargs)
     return get_colors(size(chains, 3))
 end
 
-function chainslegend(fig, chains, colors; per_bank=5)
-    _, nparams, nchains = size(chains)
+function chainslegend(fig, chains, colors; legend_position = :bottom, per_bank = 5)
+    nchains = size(chains, 3)
+    nrows, ncols = size(fig.layout)
+    banks = nbanks(chains; per_bank)
 
     elems = [PolyElement(; color) for color in colors]
     labels = string.(1:nchains)
-
-    ncols = last(size(fig.layout))
-    colpos = ncols > 1 ? range(1, ncols) : 1
-
-    Legend(fig[nparams+1, colpos], elems, labels, "Chain",
-        orientation=:horizontal, nbanks=nbanks(chains; per_bank))
+    
+    if legend_position == :bottom
+        colpos = ncols > 1 ? range(1, ncols) : 1
+        Legend(fig[nrows + 1, colpos], elems, labels, "Chain",
+            orientation=:horizontal, nbanks = banks)
+    elseif legend_position == :right
+        rowpos = nrows > 1 ? range(1, nrows) : 1
+        Legend(fig[rowpos, ncols + 1], elems, labels, "Chain", nbanks = banks)
+    else
+        error("Unsupported legend position: $legend_position, pick `:right` or `:bottom`.")
+    end
 
     return nothing
 end

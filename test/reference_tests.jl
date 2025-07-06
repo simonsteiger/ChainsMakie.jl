@@ -22,6 +22,12 @@ reftest("two hists") do
     return fig
 end
 
+reftest("legend position right") do
+    chns = testchains()
+    fig = hist(chns, ["A", "B"], legend_position = :right, colormap = :viridis)
+    return fig
+end
+
 reftest("ridgeline") do
     chns = testchains()
     fig, ax, plt = ridgeline(chns, ["A", "B"])

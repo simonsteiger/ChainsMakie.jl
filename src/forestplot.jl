@@ -76,15 +76,9 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     return fp
 end
 
-function forestplot(
-    chains::Chains,
-    parameters; figure = nothing,
-    ci = default_ci,
-    colormap = :viridis,
-    point_summary = median,
-    min_width = 4,
-    max_width = 8
-)
+function forestplot(chains::Chains, parameters; figure = nothing, ci = default_ci, 
+    colormap = :viridis, point_summary = median, min_width = 4, max_width = 8, 
+    legend_position = :bottom)
     samples = [vec(chains[:, parameter, :]) for parameter in parameters]
 
     if !(figure isa Figure)
@@ -99,7 +93,14 @@ function forestplot(
     labels = @. string(round(Int, ci * 100)) * "%"
     colors = forest_colors(length(labels))
     elems = [PolyElement(; color) for color in colors]
-    Legend(figure[1, 2], elems, labels, "Quantiles", tellheight = false)
+    
+    if legend_position == :bottom
+        Legend(figure[1, 2], elems, labels, "Quantiles", tellheight = false)
+    elseif legend_position == :right
+        Legend(figure[2, 1], elems, labels, "Quantiles", tellheight = false)
+    else
+        error("Unsupported legend position: $legend_position, pick `:right` or `:bottom`.")
+    end
 
     return figure, ax, plt
 end
