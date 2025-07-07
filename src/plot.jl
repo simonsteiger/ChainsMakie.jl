@@ -34,7 +34,8 @@ chains = Chains(randn(300, 3, 3), [:A, :B, :C])
 plot(chains)
 ```
 """
-function Makie.plot(chains::Chains, parameters; figure = nothing, link_x = false, color = :default, colormap = :default)
+function Makie.plot(chains::Chains, parameters; figure = nothing, link_x = false, 
+    color = :default, colormap = :default, legend_position = :bottom)
     sub_chains = chains[:, parameters, :]
     
     _, nparams, nchains = size(sub_chains)
@@ -71,7 +72,7 @@ function Makie.plot(chains::Chains, parameters; figure = nothing, link_x = false
     end
 
     colors = get_colors(nchains; color, colormap)
-    chainslegend(figure, sub_chains, colors)
+    chainslegend(figure, sub_chains, colors; legend_position)
 
     if link_x
         axes = [only(contents(figure[i, 2])) for i in 1:nparams]
@@ -83,7 +84,8 @@ end
 
 Makie.plot(chains::Chains; kwargs...) = plot(chains, names(chains); kwargs...)
 
-function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure = nothing, link_x = false, kwargs...) where N
+function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure = nothing, 
+    link_x = false, legend_position = :bottom, kwargs...) where N
     for f_i in string.(funs)
         endswith(f_i, "!") ||
             error("All functions must be mutating. Got `$(f_i)`, pass `$(f_i)!` instead.")
@@ -136,7 +138,7 @@ function Makie.plot(chains::Chains, parameters, funs::Vararg{Function,N}; figure
 
     per_bank = N > 2 ? 8 : 5
     color = get_colors(nchains; kwargs...)
-    chainslegend(figure, sub_chains, color; per_bank)
+    chainslegend(figure, sub_chains, color; per_bank, legend_position)
 
     if link_x
         axes = [only(contents(figure[i, 2])) for i in 1:nparams]

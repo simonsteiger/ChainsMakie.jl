@@ -45,7 +45,7 @@ function Makie.plot!(ap::AutocorPlot{<:Tuple{<:AbstractMatrix}})
 end
 
 function autocorplot(chains::Chains, parameters; figure = nothing, color = :default,
-    colormap = :default, lags = 0:20, linewidth = 1.5, alpha = 1.0)
+    colormap = :default, lags = 0:20, linewidth = 1.5, alpha = 1.0, legend_position = :bottom)
 
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -67,7 +67,7 @@ function autocorplot(chains::Chains, parameters; figure = nothing, color = :defa
     end
 
     colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
-    chainslegend(figure, chains[:, parameters, :], colors)
+    chainslegend(figure, chains[:, parameters, :], colors; legend_position)
     
     return figure
 end

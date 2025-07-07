@@ -54,7 +54,7 @@ density(chains)
 ```
 """
 function Makie.density(chains::Chains, parameters; figure = nothing, color = :default,
-    colormap = :default, strokewidth = 1.0, alpha = 0.4)
+    colormap = :default, strokewidth = 1.0, alpha = 0.4, link_x = false, legend_position = :bottom)
 
     if !(figure isa Figure)
         figure = Figure(size = autosize(chains[:, parameters, :]))
@@ -62,19 +62,13 @@ function Makie.density(chains::Chains, parameters; figure = nothing, color = :de
 
     for (i, parameter) in enumerate(parameters)
         ax = Axis(figure[i, 1], ylabel = string(parameter))
-        
-        hideydecorations!(ax; label=false)
-        if i < length(parameters)
-            hidexdecorations!(ax; grid=false)
-        else
-            ax.xlabel = "Parameter estimate"
-        end
-
         chainsdensity!(chains[:, parameter, :]; color, colormap, strokewidth, alpha)
+        islast = length(parameters) == i
+        setaxisdecorations!(ax, islast, "Parameter estimate", link_x)
     end
 
     colors = get_colors(size(chains[:, parameters, :], 3); color, colormap)
-    chainslegend(figure, chains[:, parameters, :], colors)
+    chainslegend(figure, chains[:, parameters, :], colors; legend_position)
 
     return figure
 end
