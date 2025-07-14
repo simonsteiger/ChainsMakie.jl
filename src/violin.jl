@@ -42,13 +42,12 @@ function Makie.violin!(chains::Chains, parameters; color = :default, link_x = fa
         ax2 = Axis(fig[i, 1], ylabel = "Parameter estimate", yaxisposition = :right)
         
         if color == :default
-            colors = get_colors(size(chains, 3); color)
-            color_per_value = repeat(colors, inner = size(chains, 1))
-            plt = violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
-        else
-            color_per_value = repeat(first(color, size(chains, 3)), inner = size(chains, 1))
-            plt = violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
+            color = get_colors(size(chains, 3); color) 
         end
+
+        color_per_value = repeat(first(color, size(chains, 3)), inner = size(chains, 1))
+        
+        plt = violin!(chains[:, parameter, :]; color = color_per_value, kwargs...)
         
         hideydecorations!(ax; label = false)
         hidexdecorations!(ax)
@@ -66,7 +65,6 @@ function Makie.violin!(chains::Chains, parameters; color = :default, link_x = fa
             
             if link_x
                 [hidexdecorations!(a; grid = false) for a in [ax, ax2]]
-                hideydecorations!(ax2; label = false)
             else
                 hidexdecorations!(ax; grid = false, ticklabels = false, ticks = false)
             end
