@@ -86,7 +86,7 @@ function forestplot(chains::Chains, parameters; figure = nothing, ci = default_c
     end
 
     ax = Axis(figure[1, 1])
-    ax.yticks = (eachindex(parameters), reverse(string.(parameters)))
+    ax.yticks = (eachindex(parameters), string.(parameters))
     ax.xlabel = "Parameter estimate"
     plt = forestplot!(samples; ci, point_summary, min_width, max_width, colormap)
     
@@ -102,7 +102,7 @@ function forestplot(chains::Chains, parameters; figure = nothing, ci = default_c
         error("Unsupported legend position: $legend_position, pick `:right` or `:bottom`.")
     end
 
-    return figure, ax, plt
+    return figure
 end
 
 forestplot(chains::Chains; kwargs...) = forestplot(chains, names(chains); kwargs...)

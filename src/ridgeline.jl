@@ -46,11 +46,11 @@ function ridgeline(chn::Chains, parameters; figure = nothing, color = first(Maki
     end
 
     ax = Axis(figure[1, 1])
-    ax.yticks = (eachindex(parameters) ./ 2, reverse(string.(parameters)))
+    ax.yticks = (eachindex(parameters) ./ 2, string.(parameters))
     ax.xlabel = "Parameter estimate"
-    plt = ridgeline!(samples; color, strokewidth, strokecolor, alpha)
+    ridgeline!(samples; color, strokewidth, strokecolor, alpha)
 
-    return figure, ax, plt
+    return figure
 end
 
 ridgeline(chains::Chains; kwargs...) = ridgeline(chains, names(chains); kwargs...)
