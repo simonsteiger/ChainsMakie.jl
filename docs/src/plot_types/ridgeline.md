@@ -38,8 +38,7 @@ Defaults to the first color in Makie's `wong_colors` palette.
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = ridgeline(chains; color = :orange)
-fig
+ridgeline(chains; color = :orange)
 ```
 
 ### `strokewidth`
@@ -52,8 +51,7 @@ Defaults to `1.0`.
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = ridgeline(chains; strokewidth = 2.0)
-fig
+ridgeline(chains; strokewidth = 2.0)
 ```
 
 ### `strokecolor`
@@ -66,8 +64,7 @@ Defaults to the first color in Makie's [`wong_colors`](https://docs.makie.org/de
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = ridgeline(chains; strokecolor = :black)
-fig
+ridgeline(chains; strokecolor = :black)
 ```
 
 ### `alpha`
@@ -80,7 +77,5 @@ Defaults to `0.4`.
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = ridgeline(chains; color = :orange, 
-    strokecolor = :orange, strokewidth = 2.0, alpha = 0.6)
-fig
+ridgeline(chains; alpha = 0.6)
 ```
