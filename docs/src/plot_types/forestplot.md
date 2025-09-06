@@ -13,8 +13,7 @@ This, forest plots are better suited for reporting and interpretation than diagn
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = forestplot(chains)
-fig
+forestplot(chains)
 ```
 
 It is possible to plot a subset of the parameters by passing their names as the second argument:
@@ -39,8 +38,7 @@ Defaults to `[0.95, 0.90]`.
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = forestplot(chains; ci = [0.99, 0.95, 0.89])
-fig
+forestplot(chains; ci = [0.99, 0.95, 0.89])
 ```
 
 ### `point_summary`
@@ -55,8 +53,7 @@ using ChainsMakie, CairoMakie
 import StatsBase: mean
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = forestplot(chains; point_summary = mean)
-fig
+forestplot(chains; point_summary = mean)
 ```
 
 ### `colormap`
@@ -69,8 +66,7 @@ Defaults to [`:viridis`](https://docs.makie.org/dev/explanations/colors#Colormap
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = forestplot(chains; colormap = :plasma)
-fig
+forestplot(chains; colormap = :plasma)
 ```
 
 ### `min_width`
@@ -90,6 +86,5 @@ using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 5, 4), [:A, :B, :C, :D, :E])
 ci = [0.99, 0.95, 0.89, 0.8]
-fig, ax, plt = forestplot(chains; ci, min_width = 3, max_width = 12)
-fig
+forestplot(chains; ci, min_width = 3, max_width = 12)
 ```

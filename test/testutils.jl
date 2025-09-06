@@ -1,5 +1,9 @@
 function continuous_samples(; n = 300, p = 4, c = 4)
-    return randn(StableRNG(42), n, p, c)
+    A = randn(StableRNG(42), n, p, c)
+    for i in axes(A, 2)
+        A[:, i, :] .+= i - 2
+    end
+    return A
 end
 
 function discrete_samples(; n = 300, p = 1, c = 4)
