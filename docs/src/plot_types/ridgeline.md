@@ -13,8 +13,7 @@ Instead, it can provide a more concise overview of parameter distributions after
 using ChainsMakie, CairoMakie
 import MCMCChains: Chains
 chains = Chains(randn(300, 2, 4), [:A, :B])
-fig, ax, plt = ridgeline(chains)
-fig
+ridgeline(chains)
 ```
 
 It is possible to plot a subset of the parameters by passing their names as the second argument:
