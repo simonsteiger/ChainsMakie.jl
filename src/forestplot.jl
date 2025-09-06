@@ -89,10 +89,10 @@ function forestplot(chains::Chains, parameters; figure = nothing, ci = default_c
     ax = Axis(figure[1, 1])
     ax.yticks = (eachindex(parameters), reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
-    plt = forestplot!(samples; ci, point_summary, min_width, max_width, colormap)
+    forestplot!(samples; ci, point_summary, min_width, max_width, colormap)
     
     labels = @. string(round(Int, ci * 100)) * "%"
-    colors = forest_colors(length(labels))
+    colors = forest_colors(length(labels); colormap)
     elems = [PolyElement(; color) for color in colors]
     
     if legend_position == :bottom
