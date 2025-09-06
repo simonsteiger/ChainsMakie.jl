@@ -44,6 +44,7 @@ forest_colors(n; kwargs...) = first(get_colors(n + 1; threshold = 0, kwargs...),
 
 function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}})
     samples = fp[1]
+    r_samples = reverse(samples[]) # FIXME interactivity
 
     for ci in fp.ci[]
         0 < ci < 1 || error("Coverage must be between 0 and 1, got $ci.")
@@ -51,7 +52,7 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     
     sorted_qs = map(ci_to_quantiles, sort(fp.ci[], rev = true))
 
-    qs = [[quantile.(Ref(s_i), qs_i) for s_i in samples[]] for qs_i in sorted_qs]
+    qs = [[quantile.(Ref(s_i), qs_i) for s_i in r_samples] for qs_i in sorted_qs]
 
     colors = forest_colors(length(fp.ci[]); colormap = fp.colormap[])
     
@@ -60,17 +61,17 @@ function Makie.plot!(fp::ForestPlot{<:Tuple{<:AbstractVector{<:AbstractVector}}}
     for (q, color, linewidth) in zip(qs, colors, linewidths)
         lower = sdim(1)(q)
         upper = sdim(2)(q)
-        for (i, xmin, xmax) in zip(eachindex(samples[]), lower, upper)
+        for (i, xmin, xmax) in zip(eachindex(r_samples), lower, upper)
             lines!(fp, [xmin, xmax], fill(i, 2); color, linewidth)
         end
     end
 
-    points = fp.point_summary[].(samples[])
+    points = fp.point_summary[].(r_samples)
     if !(points isa Vector{<:Real})
         throw(error("Calling `point_summary` on a Vector must return a Float64."))
     end
 
-    scatter!(fp, points, eachindex(samples[]); marker = :diamond, markersize = 18, 
+    scatter!(fp, points, eachindex(r_samples); marker = :diamond, markersize = 18, 
         color = last(to_colormap(fp.colormap[])), strokecolor = :black, strokewidth = 1.5)
 
     return fp
@@ -86,7 +87,7 @@ function forestplot(chains::Chains, parameters; figure = nothing, ci = default_c
     end
 
     ax = Axis(figure[1, 1])
-    ax.yticks = (eachindex(parameters), string.(parameters))
+    ax.yticks = (eachindex(parameters), reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
     plt = forestplot!(samples; ci, point_summary, min_width, max_width, colormap)
     

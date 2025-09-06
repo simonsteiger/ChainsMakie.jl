@@ -17,9 +17,9 @@ end
 
 @testset "Ridgeline inputs" begin
     chns = testchains()
-    fig1, ax1, plt1 = ridgeline(chns, ["A", "B"])
+    fig1 = ridgeline(chns, ["A", "B"])
     @test fig1 isa Figure
-    fig2, ax2, plt2 = ridgeline(chns, [:A, :B])
+    fig2 = ridgeline(chns, [:A, :B])
     @test fig2 isa Figure
 end
 

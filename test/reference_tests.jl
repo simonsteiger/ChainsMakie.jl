@@ -30,13 +30,13 @@ end
 
 reftest("ridgeline") do
     chns = testchains()
-    fig, ax, plt = ridgeline(chns, ["A", "B"])
+    fig = ridgeline(chns, ["A", "B"])
     return fig
 end
 
 reftest("forestplot median") do
     chns = testchains()
-    fig, ax, plt = forestplot(chns, [:A, :B, :C, :D])
+    fig = forestplot(chns, [:A, :B, :C, :D])
     return fig
 end
 
@@ -103,7 +103,7 @@ reftest("plot two banks") do
     return fig
 end
 
-reftest("plot > 7 chains") do
+reftest("plot many chains") do
     chns = testchains(continuous_samples(p = 2, c = 8))
     fig = plot(chns)
     return fig

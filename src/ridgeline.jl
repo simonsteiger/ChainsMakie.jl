@@ -29,7 +29,7 @@ end
 
 function Makie.plot!(rl::RidgeLine{<:Tuple{<:AbstractVector{<:AbstractVector}}})
     vectors = rl[1]
-    for (i, vector) in enumerate(vectors[])
+    for (i, vector) in enumerate(reverse(vectors[]))
         density!(rl, vector, offset = i/2, color = (rl.color[], rl.alpha[]), 
                  strokecolor = rl.strokecolor[], strokewidth = rl.strokewidth)
     end
@@ -46,7 +46,7 @@ function ridgeline(chn::Chains, parameters; figure = nothing, color = first(Maki
     end
 
     ax = Axis(figure[1, 1])
-    ax.yticks = (eachindex(parameters) ./ 2, string.(parameters))
+    ax.yticks = (eachindex(parameters) ./ 2, reverse(string.(parameters)))
     ax.xlabel = "Parameter estimate"
     ridgeline!(samples; color, strokewidth, strokecolor, alpha)
 
